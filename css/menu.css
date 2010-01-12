@@ -1,0 +1,45 @@
+ul#menu li {
+	display: inline;
+	position: relative;
+	margin: 0px 0.4em;
+}
+
+ul#menu {
+	display: block;
+	padding: 0px;
+	margin: 0px;
+}
+ul#menu span.icon {
+	display: block!important;
+}
+
+
+ul#menu li.mega div {
+	margin:0px 3px;
+	display: none;
+	width: 10em;
+	position: absolute;
+	top: 1.2em;
+	left: 0em;
+	background-color: #efefff;
+	border: solid 0.1em #dfdfff;
+}
+
+ul#menu li.hovering div {
+	display: block;
+	z-index: 2;
+}
+span.submenu{
+	display:block;
+	padding: 2px 3px;
+	font-size: 0.9em;
+}
+span.description{
+	font-size: 0.6em;
+	display:block;
+	margin-bottom: 5px;
+	padding: 0 0.3em 0 0.3em;
+}
+span.hovering {
+	background-color: #e0e0ff;
+}

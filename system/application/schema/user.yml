@@ -1,0 +1,88 @@
+User:
+  tableName: tblUsers
+  columns:
+    id:
+      primary: true
+      autoincrement: true
+      type: integer(4)
+    username:
+      type: string(255)
+      unique: true
+      notnull: true
+    password: string(255)
+    firstname: string(50)
+    surname: string(50)
+    emailaddress:
+      type: string(255)
+      email: true
+    language: string(30)
+    locked_out:
+      type: boolean
+      default: false
+  relations:
+    Groups:
+      class: Group        # Class name. Optional if alias is the class name
+      local: user_id      # Local
+      foreign: group_id   # Foreign
+      refClass: UserGroup # xRefClass for relating Users to Groups
+      foreignAlias: Users # Opposite relationship alias. Group hasMany Users
+    Language:
+      local: language
+      foreign: name
+Group:
+  tableName: groups
+  columns:
+    id:
+       primary: true
+       autoincrement: true
+       type: integer(4)
+    name: string(255)
+  relations:
+    Permissions:
+      class: Permission
+      local: group_id
+      foreign: permission_id
+      refClass: GroupPermission
+      foreignAlias: Groups
+      onDelete: CASCADE
+
+
+UserGroup:
+  columns:
+    user_id:
+      type: integer(4)
+      primary: true
+    group_id:
+      type: integer(4)
+      primary: true
+  relations:
+    User:
+      local: user_id    # Local key
+      foreign: id       # Foreign key
+      onDelete: CASCADE # Database constraint
+    Group:
+      local: group_id
+      foreign: id
+      onDelete: CASCADE
+      
+LoginActivity:
+  columns:
+    user_id:
+      type: integer(4)
+      notnull: true
+    event: string(255)
+    time: timestamp
+    host: string(255)
+    ipaddress: string(30)
+  relations:
+    User:
+      local: user_id
+      foreign: id
+      onDelete: CASCADE
+
+Language:
+  columns:
+    name:
+       primary: true
+       type: string(30)
+    comments: string(255)

@@ -1,0 +1,138 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	font-size: 14pt;
+	font-family: Arial, Helvetica, Sans-Serif;
+}
+a{
+	text-decoration: none;
+}
+a:hover{
+	text-decoration: underline;
+}
+.page {
+	border: solid 2px #6fbfd9;
+	width: 900px;
+	margin-left: auto;
+	margin-right: auto;
+	min-height: 700px;
+	position: relative;
+	-moz-border-radius: 4px;
+	position: relative;
+}
+#content{
+	margin-right: 100px;
+	position: relative;
+	padding: 2px 2px 2px 2px;
+	margin-bottom: 25px;
+	/*margin: 4px 0px 4px 0px;*/
+}
+
+#topnav {
+	background-color: #efefff;
+	height: 60px;
+	position: relative;
+}
+
+#footer{
+	background-color: #d8d8ff;
+	color: #ffffff;
+	text-align: center;
+	position: absolute;
+	height: 25px;
+	width: 100%;
+	bottom: 0px;
+}
+
+div#greeting {
+	position: absolute;
+	top: 0px;
+	right: 0px;
+}
+
+.label {
+	font-weight: bold;
+}
+
+td.label {
+	text-align: right;
+}
+
+.candidateinfo {
+	background-color: #f1f1f1; /*position:absolute;display:inline-block;*/
+	margin-bottom: 30px;
+	width: auto;
+}
+
+.addresscontainer {
+	margin: 2px;
+	border: solid 1px #6fbfd9;
+	-moz-border-radius: 4px;
+	min-width: 200px;
+	overflow: visible;
+}
+
+.addressinfo {
+	margin-left: 4px;
+}
+
+.sectionheader {
+	height: 1.2em;
+	background-color: #2e1fad !important;
+	padding-left: 4px;
+	color: #ffffff;
+	font-size: 10pt;
+	font-weight: bold;
+}
+
+.headericon {
+	vertical-align: text-top;
+}
+
+.editlink {
+	cursor: pointer;
+}
+
+.right {
+	text-align: right;
+}
+
+.sectiontitle {
+	float: left;
+}
+
+.sectionicons {
+	float: right;
+}
+
+.inlineimage {
+	vertical-align: middle;
+}
+
+div.topmenuitem {
+	float: left;
+	margin: 0px 3px;
+}
+
+a img {
+	border-style: none;
+}
+div.error{
+	color: #ff0000;
+	background-color: #ffefef;
+	width: 20em;
+	margin: 20px;
+	overflow: visible;
+	white-space: nowrap;
+}
+div.error p, div.error li{
+	display: block;
+	margin: 3px 2px;
+}
+
+#sidebar{
+	position:absolute;
+	width: 100px;
+	top: 0px;
+	right: 0px;
+}

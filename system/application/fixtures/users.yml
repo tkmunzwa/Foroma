@@ -1,0 +1,185 @@
+# UnderWire fixture files
+#
+
+Language:
+  english:
+    name: english
+  shona:
+    name: shona
+User:
+  admin:
+    username: admin
+    password: admin
+    Groups: [administrator, user]
+    language: shona
+  normaluser:
+    username: user
+    password: user
+    Groups: [user]
+    language: english
+  publicuser: #system 'user' for public pages, assigned to everyone who's not logged in
+    username: public #please note that this user should match UW configuration file default username
+    locked_out: true
+    firstname: guest
+    Groups: [public]
+Group:
+  administrator:
+    name: Administrator
+    Permissions: [admin_perm]
+  user:
+    name: User
+    Permissions: [user_perm]
+  public:
+    name: Public
+    Permissions: [public_perm]
+  
+Module:
+  admin_mod:
+    fragment: admin
+    icon: admin.png
+    text: System Admin.
+    hovertext: Manage System Configuration
+    description: Configure system settings
+    menuposition: 1000
+    onmenu: true
+    Children: [admin_config]
+  admin_users:
+    fragment: admin/users
+    icon: users.png
+    text: Security Admin.
+    hovertext: Manage Users
+    description: Configure Users settings
+    menuposition: 1001
+    onmenu: true
+    Children: [userlist_mod, roles_mod, usercreate_mod, modules_mod]
+  userlist_mod:
+    fragment: admin/users/listall
+    icon: users.png
+    text: User Admin.
+    hovertext: Manage Users
+    description: Configure Users settings
+    menuposition: 1
+    onmenu: true
+  useredit_mod:
+    fragment: admin/users/edit
+    text: Edit User
+    hovertext: Edit User
+    description: Edit User Details
+    onmenu: false
+  modules_mod:
+    fragment: admin/usermodules
+    text: Manage Modules
+    hovertext: Manage Modules
+    description: Manage system modules
+    menuposition: 4
+    onmenu: true
+    Children: [modulelistall_mod, moduleedit_mod]
+  modulelistall_mod:
+    fragment: admin/usermodules/listall
+    text: List Modules
+    hovertext: List Modules
+    description: List all system modules
+    menuposition: 1
+    onmenu: true
+  moduleedit_mod:
+    fragment: admin/usermodules/edit
+    text: Edit Modules
+    hovertext: Edit Modules
+    description: Edit system modules
+    onmenu: false
+  roles_mod:
+    fragment: admin/roles
+    icon: roles.png
+    text: Manage Roles.
+    hovertext: Manage Roles
+    description: Configure Users settings
+    menuposition: 2
+    onmenu: true
+  usercreate_mod:
+    fragment: admin/users/create
+    text: New User
+    hovertext: Create New User...
+    description: Create a new user
+    menuposition: 4
+    onmenu: true
+  help_mod:
+    fragment: help
+    text: Help
+    description: Get help on using this system
+    onmenu: true
+    menuposition: 2000
+    Children: [helphelp_mod, helpabout_mod]
+  helphelp_mod:
+    fragment: help/contents
+    text: Contents
+    description: Help contents
+    onmenu: true
+    menuposition: 1
+  helpabout_mod:
+    fragment: help/about
+    text: About...
+    description: Get information about this system
+    onmenu: true
+    menuposition: 4
+  
+
+  admin_config:
+    fragment: admin/config
+    icon: users.png
+    text: Configuration.
+    hovertext: System Configuration
+    description: Configure Users settings
+    menuposition: 1
+    onmenu: true
+    
+  home_mod:
+    fragment: ""
+    icon: home.png
+    text: Home
+    hovertext: Home page
+    description: Home page
+    menuposition: -1
+    onmenu: true
+    ispublic: true
+  cand_find:
+    fragment: cand/search
+    text: Search
+    hovertext: Search Candidates
+    description: find among candidates
+    menuposition: 1
+    onmenu: true
+  cand_mail:
+    fragment: cand/mail
+    text: Send Email
+    hovertext: Send email to Candidate(s)
+    description: Send an email to candidates
+    menuposition: 2
+    onmenu: true
+  cand_mod:
+    fragment: cand
+    icon: candidate24.png
+    text: Candidates
+    hovertext: candidates information
+    description: edit candidate information
+    menuposition: 1
+    Children: [cand_find, cand_mail]
+    onmenu: true
+  login_mod:
+    text: login
+    fragment: login
+    onmenu: false
+    ispublic: true
+    
+Permission:
+  admin_perm:
+    name: Admin
+    description: allow access to admin module
+    Modules: [admin_mod, admin_users, login_mod, modules_mod, roles_mod, help_mod, userlist_mod, usercreate_mod, useredit_mod]
+  user_perm:
+    name: "Regular Users"
+    description: Rights assigned to regular system users
+    Modules: [home_mod, cand_mod, login_mod, help_mod]
+  public_perm:
+    name: "Public User"
+    description: Persmissions assigned to general public - thos who are not logged in
+    Modules: [home_mod, login_mod, help_mod, helphelp_mod, helpabout_mod]

@@ -1,0 +1,42 @@
+#Data structures for content  module
+
+#news article
+Article:
+  columns:
+    title: string(255)
+    language: string(100)
+    publishdate: date
+    expirydate: date
+    leadtext: clob
+    body: clob
+    id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    author_id:
+      type: integer(4)
+      notnull: true   
+  relations:
+    User:
+      local: author_id
+      foreign: id
+      alias: Author
+      onDelete: CASCADE
+      onUpdate: CASCADE
+    Tags:
+      class: Tag
+      refClass: ArticleTag
+      foreignAlias: Articles
+      
+      
+ArticleTag:
+  columns:
+    article_id:
+      type: integer
+      primary: true
+    tag_id:
+      type: integer
+      primary: true
+Tag:
+  columns:
+    name: string(255)

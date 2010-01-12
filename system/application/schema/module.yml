@@ -1,0 +1,108 @@
+Module:
+  columns:
+    id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    fragment:
+      type: string(255)
+      notnull: true	
+      unique: true
+    icon: string(255)
+    onmenu:
+      type: boolean
+      default: false
+    ispublic: #determines if this module is public, overrides permissions or used when public user is not in use
+      type: boolean
+      default: false
+    menuposition:
+      type: integer(4)
+      default: 0
+    text: string(255)
+    hovertext: string(255)
+    name:
+      type: string(255)
+      notnull: true
+    description: string(255)
+    parent_id: integer(4)
+  relations:
+    Permissions:
+      class: Permission
+      refClass: ModulePermission
+      local: module_id
+      foreign: permission_id
+      onDelete: CASCADE
+    Parent:
+      class: Module
+      local: parent_id
+      foreign: id
+      foreignAlias: Children
+    
+Permission:
+  columns:
+    id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    name:
+      type: string(255)
+      notnull: true
+    description: string(255)
+  relations:
+    Modules:
+      class: Module
+      refClass: ModulePermission
+      local: permission_id
+      foreign: module_id
+      onDelete: Cascade
+
+ModuleAction:
+  columns:
+    id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    module_id:
+      type: integer(4)
+  relations:
+    Module:
+      local: module_id
+      foreign: id
+      onDelete: CASCADE
+    
+ModulePermission:
+  columns:
+    permission_id:
+      type: integer(4)
+      primary: true
+    module_id:
+      type: integer(4)
+      primary: true
+  relations:
+    Module:
+      local: module_id
+      foreign: id
+      onDelete: CASCADE
+    Permission:
+      local: permission_id
+      foreign: id
+      onDelete: CASCADE
+
+        
+GroupPermission:
+  columns:
+    group_id:
+      type: integer(4)
+      primary: true
+    permission_id:
+      type: integer(4)
+      primary: true
+  relations:
+    Group:
+      local: group_id
+      foreign: id
+      onDelete: CASCADE
+    Permission:
+      local: permission_id
+      foreign: id
+      onDelete: CASCADE

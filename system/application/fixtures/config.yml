@@ -1,0 +1,37 @@
+AddressType:
+  residential:
+    name: Residential
+  work:
+    name: Work
+  postal:
+    name: postal
+
+PhoneType:
+  cell:
+    name: Cellphone
+  work:
+    name: Work
+  home:
+    name: Home
+  other:
+    name: Other
+    
+Ethnicity:
+  african:
+    name: 'African Descent'
+  european:
+    name: 'European Descent'
+  asian:
+    name: Asian Descent
+  native_american:
+    name: Native American Descent
+  mixed:
+    name: Mixed Race
+
+MaritalStatus:
+  single:
+    name: Single
+  divorced:
+    name: divorced
+  widowed:
+    name: widowed

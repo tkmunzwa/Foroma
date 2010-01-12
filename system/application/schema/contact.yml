@@ -1,0 +1,149 @@
+Contact:
+  columns:
+    id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    firstname: string(100)
+    surname: string(100)
+    title: string(30)
+    
+    
+Address:
+  columns:
+    id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    street: string(255)
+    area: string(255)
+    areacode: string(15)
+    city: string(255)
+    country: string(255)
+    addresstype_id: integer(4)
+    contact_id: integer(4)
+  relations:
+    AddressType:
+      local: addresstype_id
+      foreign: id
+      onDelete: CASCADE
+    Contact:
+      local: address_id
+      foreign: contact_id
+      refClass: ContactAddress
+      foreignAlias: Addresses
+    Candidate:
+      local: address_id
+      foreign: candidate_id
+      refClass: CandidateAddress
+      foreignAlias: Addresses   
+
+ContactAddress:
+  columns:
+    contact_id:
+      type: integer(4)
+      primary: true
+    address_id:
+      type: integer(4)
+      primary: true
+  relations:
+    Address:
+      local: address_id
+      foreign: id
+      onDelete: CASCADE
+    Contact:
+      local: contact_id
+      foreign: id
+      onDelete: CASCADE
+
+      
+CandidateAddress:
+  columns:
+    candidate_id:
+      type: integer(4)
+      primary: true
+    address_id:
+     type: integer(4)
+     primary: true
+  relations:
+    Address:
+      local: address_id
+      foreign: id
+    Candidate:
+      local: candidate_id
+      foreign: id
+      onDelete: CASCADE
+      
+AddressType:
+  columns:
+    id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    name: string(255)
+
+Phone:
+  columns:
+    id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    number: string(50)
+    phonetype_id: integer(4)
+  relations:
+    PhoneType:
+      local: phonetype_id
+      foreign: id
+      onDelete: CASCADE
+    Contact:
+      local: phone_id
+      foreign: contact_id
+      refClass: ContactPhone
+      foreignAlias: PhoneNumbers
+    Candidate:
+      local: phone_id
+      foreign: candidate_id
+      refClass: CandidatePhone
+      foreignAlias: PhoneNumbers  
+
+PhoneType:
+  columns:
+    id:
+      type: integer(4)
+      primary: true
+      autoincrement: true
+    name: string(255) 
+    
+CandidatePhone:
+  columns:
+    candidate_id:
+      type: integer(4)
+      primary: true
+    phone_id:
+     type: integer(4)
+     primary: true
+  relations:
+    Phone:
+      local: phone_id
+      foreign: id
+    Candidate:
+      local: candidate_id
+      foreign: id
+      onDelete: CASCADE
+
+ContactPhone:
+  columns:
+    contact_id:
+      type: integer(4)
+      primary: true
+    phone_id:
+     type: integer(4)
+     primary: true
+  relations:
+    Phone:
+      local: phone_id
+      foreign: id
+    Contact:
+      local: contact_id
+      foreign: id
+      onDelete: CASCADE

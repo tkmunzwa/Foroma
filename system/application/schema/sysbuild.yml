@@ -1,0 +1,32 @@
+SysBuildModel:
+  columns:
+    name:
+      type: string(255)
+      primary: true
+
+SysBuildAttribute:
+  columns:
+    attribute:
+      type: string(255)
+      primary: true
+    datatype_id: string(255)
+    size: integer
+    isnotnull: boolean
+    isprimary: boolean
+    model: string(255)
+  relations:
+    SysBuildModel:
+      local: model
+      foreign: name
+      onDelete: CASCADE
+      onUpdate: CASCADE
+    SysBuildAttributeDataType:
+      local: datatype_id
+      foreign: datatype
+  
+SysBuildAttributeDataType:
+  columns:
+    datatype:
+      type: string(255)
+      primary: true
+    requires_size: boolean

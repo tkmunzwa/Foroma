@@ -1,0 +1,9 @@
+table.datagrid > tr:hover > td, table.datagrid > tbody > tr:hover > td{
+	background-color: #d8d8ff;
+}
+
+table.datagrid > tr > td, table.datagrid > tr > th{
+	margin: 0;
+	padding: 0.2em;
+	border: none;
+}
