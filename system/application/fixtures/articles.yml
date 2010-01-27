@@ -1,0 +1,30 @@
+Group:
+  editor:
+    name: Editor
+    Permissions: [editor_perm]
+  publisher:
+    name: Publisher
+    Permissions: [publisher_perm]
+  writer:
+    name: Writer
+    Permissions: [writer_perm]
+
+Module:
+  content_mod:
+    fragment: content
+#    icon: admin.png
+    text: Content
+#    hovertext: 	Manage System Configuration
+#    description: Configure system settings
+    menuposition: 4
+    onmenu: true
+    Children: [articles, content_management]
+
+  articles:
+    fragment: content/articles
+#    icon: admin.png
+    text: Articles
+    hovertext: 	Read latest articles
+    description: Read articles
+    menuposition: 1
+    onmenu: true
