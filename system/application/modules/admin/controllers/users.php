@@ -6,6 +6,8 @@ class Users	 extends Controller
 
 	var $_infos;
 	var $_errors;
+	var $groups;//collection of avail groups
+	var $langs;//collection of avail langs
 	
 	function Users(){
 		parent::Controller();
@@ -14,6 +16,9 @@ class Users	 extends Controller
 		$this->load->library('FirePHP');
 		$this->template->set_loader($this->load);
 		$this->template->write('title', 'User Management');
+		$this->groups = Doctrine::getTable('Group')->findAll();
+		$this->langs = Doctrine::getTable('Language')->findAll();
+		
 		if ($message = $this->session->flashdata('message'))
 			$this->_info($message);	
 		if ($e = $this->session->flashdata('error'))
@@ -38,14 +43,14 @@ class Users	 extends Controller
 				redirect("admin/users/listall");
 			} else {
 				$this->template->write_view("content", "role_edit", array("data"=> array ("controller"=>"admin/users/create",
-				 "role"=>"new", "errors" => $this->_errors)));
+				 "role"=>"new", "errors" => $this->_errors, 'groups'=>$this->groups, 'langs'=>$this->langs)));
 				$this->template->render();
 			}
 		} else {
 			$u = new User();
 			$u->id = "new";
 			$this->template->write_view("content", "user_edit", array("data"=>array('user'=>$u,
-				'controller'=>'admin/users/edit')));
+				'controller'=>'admin/users/edit', 'groups'=>$this->groups, 'langs'=>$this->langs)));
 			$this->template->render();
 		}
 	}
@@ -58,6 +63,7 @@ class Users	 extends Controller
 		@$filter['username'] = $_REQUEST['username'];//FIXME: xss_clean
 		@$filter['password'] = $_REQUEST['password'];//FIXME - xss_clean
 		@$filter['groups'] = $_REQUEST['groups'];//xss_cleam me
+		@$filter['lang'] = $_REQUEST['lang'];//xss_cleam me
 		
 		if ($this->form_validation->run() == FALSE) {
 			return FALSE;
@@ -78,12 +84,22 @@ class Users	 extends Controller
 					$q = Doctrine_Query::create()
 					->from('Group g')
 					->whereIn('g.id', $filter['groups']);
-					$g = $q->execute();
+					$g = $q->execute();					
 					$this->firephp->info($g->toArray(true));
 					$g_arr = array();
 					foreach($g as $item){
 						$u->Groups[] = $item;
 					}
+					$q = Doctrine_Query::create()
+						->from('Language l')
+						->where('l.name', $filter['lang']);
+					$l = $q->execute();
+					/*@$this->firephp->info($q->getSqlQuery);
+					$l = Doctrine::getTable('Language')
+						->findOneByName($filter['lang']);
+					$this->firephp->info($l->name);*/
+					//$this->firephp->info(@$l->name);
+					$u->Language = $l;
 					try{
 						$u->save();
 						return TRUE;
@@ -126,18 +142,19 @@ class Users	 extends Controller
 		if ($id) {
 			if (isset($_REQUEST['action'])) { //record being saved from form 
 				if ($this->save($id, &$u)) {//save suceeded
+					$this->firephp->info("save ok");
 					if ($u->id == "new"){
 						$u = Doctrine::getTable('Users')
 						->findOneByUsername($filter['username']);
 					}
-					$this->firephp->warn("save succeeded!");
 					$this->session->set_flashdata("message", "User '{$u->username}' saved");
 					redirect('admin/users/listall');
 				}else{//save failed
-					$this->firephp->warn("Save failed");
 					$this->_error("Error saving record");
+					$this->firephp->error("Save failed");
 				}
 			} else { //display edit form
+				$this->firephp->info("no action");
 				//load data from database using id
 				$u = Doctrine::getTable('User')
 				->findOneById($id);
@@ -154,8 +171,9 @@ class Users	 extends Controller
 			redirect("admin/users/listall");
 			return;
 		}
+		
 		$this->template->write_view("content", "user_edit",array(
-		 "data"=>array("controller"=>"admin/users/edit/".$u->id, "user"=>$u, "messages"=>$this->_infos, "errors"=>$this->_errors)));
+		 "data"=>array("controller"=>"admin/users/edit/".$u->id, "user"=>$u, 'groups'=>$this->groups, 'langs'=>$this->langs, "messages"=>$this->_infos, "errors"=>$this->_errors)));
 		$this->template->render();
 
 	}

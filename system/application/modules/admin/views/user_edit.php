@@ -1,10 +1,10 @@
 <div class="error">
 <?php echo validation_errors(); ?>
 </div>
+<form method="post">
 <?php
 $controller = "";
-if (isset($data) && isset($data['controller'])) $controller = $data['controller'];
-echo form_open($controller); 
+if (isset($data) && isset($data['controller'])) $controller = $data['controller']; 
 @$user = $data['user'];
 if (isset($user) && is_object($user)) :
 	$user_groups = array();
@@ -13,10 +13,10 @@ if (isset($user) && is_object($user)) :
 	endforeach;
 	echo form_hidden(array("user_id"=>$user->id, "action"=>"save"));
 endif;
-
+$groups = $data['groups'];
+$langs = $data['langs'];
 if (isset($_REQUEST['groups'])) $user_groups = $_REQUEST['groups'];
 ?>
-<form>
 <h5>Username</h5>
 <input type="text" name="username" value="<?php echo set_value('username', $user->username); ?>" size="50" />
 
@@ -28,10 +28,20 @@ if (isset($_REQUEST['groups'])) $user_groups = $_REQUEST['groups'];
 
 <h5>Email Address</h5>
 <input type="text" name="email" value="<?php echo set_value('email', $user->emailaddress); ?>" size="50" />
+<fieldset name="Language">
+<label>Language</label>
+<select name="lang" id="lang">
+	<option></option>
+<?php
+foreach(@$langs as $lang):
+?>
+<option value="<?php echo $lang->name; ?>" <?php if ($user->language == $lang->name) echo " selected=\"selected\"";?> ><?php echo $lang->name;?></option>
+<?php endforeach;?>
+</select>
+</fieldset>
 <fieldset name="Group Membership"> 
 <?php
-$groups = Doctrine::getTable('Group')->findAll();
-foreach($groups as $group):
+foreach(@$groups as $group):
 ?>
 <input type="checkbox" value="<?php echo $group->id; ?>" name="groups[]" <?php if (in_array($group->id, $user_groups)) echo " checked=\"checked\""?> /><?php echo $group->name;?><br/>
 <?php endforeach;?>
@@ -39,6 +49,6 @@ foreach($groups as $group):
 <div>
 <?php
 echo form_button(array('icon'=>'save'),lang("save"));
-echo form_button(array('icon'=>'cancel', 'onclick'=>"history.go(-1);", 'type'=>'button'),lang("cancel"));
+echo form_button(array('icon'=>'cancel', 'href'=>site_url('/admin/users/listall'), 'type'=>'link'),lang("cancel"));
 ?></div>
 </form>
