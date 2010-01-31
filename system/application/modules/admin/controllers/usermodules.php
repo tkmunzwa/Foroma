@@ -12,8 +12,8 @@ class UserModules extends Controller {
 		$this->load->library('form_validation');
 		$this->load->library('fo_module');
 		if ($this->_debug) $this->load->library('FirePHP');
-//		$this->form_validation->set_rules('fragment', 'Fragment', 'required|trim');
-		$this->form_validation->set_rules('fragment', 'Fragment', 'trim');
+		$this->form_validation->set_rules('fragment', 'Fragment', 'required|trim');
+//		$this->form_validation->set_rules('fragment', 'Fragment', 'trim');
 		$this->template->set_loader($this->load);
 		$this->template->write('title', 'Modules');
 		if ($message = $this->session->flashdata('message'))
@@ -26,7 +26,7 @@ class UserModules extends Controller {
 		$this->listall();
 	}
 	
-	function save($fragment = FALSE){
+	function save($fragment = FALSE, $skipValidation = FALSE){
 		$filter = array();
 		@$filter['icon'] = $_REQUEST['icon'];
 		@$filter['description'] = $_REQUEST['description'];
@@ -37,9 +37,11 @@ class UserModules extends Controller {
 		@$filter['hovertext'] = $_REQUEST['hovertext'];
 		@$filter['menuposition'] = $_REQUEST['menuposition'];
 				
-		if ($this->form_validation->run() == FALSE) {
-			$this->firephp->warn("validation failed1");
-			//return FALSE;
+		if (!$skipValidation && $this->form_validation->run() == FALSE) {
+			$this->firephp->warn("validation failed ");
+			$this->firephp->warn(form_error('fragment'));
+			//FIXME: not saving when "add fragment" button is pressed
+		//	return FALSE;
 		} else {
 			if ($fragment) {
 				$q = Doctrine_query::create()
@@ -152,7 +154,7 @@ class UserModules extends Controller {
 			foreach($added as $item){
 				$msg = "";
 				$item = str_replace("-", "/", $item);
-				if (!$this->_add($item, $msg)){
+				if (!$this->_add($item, $msg, true)){
 					if ($this->_debug) $this->firephp->error($msg);
 				}
 			}
@@ -174,24 +176,25 @@ class UserModules extends Controller {
 		if ($fragment){
 			$_REQUEST['fragment'] = $fragment;
 			$fragment = str_replace("-", "/", $fragment);
-			if ($this->_add($fragment, $msg)){
+			if ($this->_add($fragment, $msg, true)){
 				header("Location: ".site_url("/admin/usermodules/listall"));
 			} else {
 				$this->_errors($msg);
 				$this->firephp->error($msg);
 				//display error?
+				$this->session->set_flashdata('error', $msg);//TODO: display error screen			
 			}
 		}
 	}
 	
-	function _add($fragment, &$msg = FALSE){
+	function _add($fragment, &$msg = FALSE, $skipValidation = false){
 		if ($fragment){
 			try{
-				$this->save($fragment);
+				$this->save($fragment, $skipValidation);
 				$this->firephp->warn("$fragment");
 				return true;
 			} catch (Exception $e){
-				if ($msg !== FALSE) $msg = $e->getMessage();
+				$msg = $e->getMessage();
 				return false;
 			}
 		}
