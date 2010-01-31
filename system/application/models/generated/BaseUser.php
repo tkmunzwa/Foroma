@@ -17,6 +17,7 @@
  * @property Language $Language
  * @property Doctrine_Collection $UserGroup
  * @property Doctrine_Collection $LoginActivity
+ * @property Doctrine_Collection $Article
  * 
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
@@ -85,5 +86,9 @@ abstract class BaseUser extends Doctrine_Record
         $this->hasMany('LoginActivity', array(
              'local' => 'id',
              'foreign' => 'user_id'));
+
+        $this->hasMany('Article', array(
+             'local' => 'id',
+             'foreign' => 'author_id'));
     }
 }

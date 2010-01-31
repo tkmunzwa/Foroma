@@ -23,7 +23,30 @@ class Manage extends Controller{
 		//load models into data here.
 		$this->template->write_view('content', 'articles_view', $data);
 		$this->template->render();
-
+	}
+	
+	function publish(){
+		
+	}
+	
+	function edit(){
+		
+	}
+	
+	function delete(){
+		//FIXME
+	}
+	
+	function unpublish(){
+		//FIXME
+	}
+	
+	function listall(){
+		//FIXME:
+	}
+	
+	function listown(){
+		//FIXME: 
 	}
 }
 ?>
