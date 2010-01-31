@@ -49,6 +49,6 @@ foreach($modules as $current):
 
 <div><?php
 echo form_button(array('icon'=>'save'),lang("save"));
-echo form_button(array('icon'=>'cancel', 'onclick'=>"window.location.href= '".site_url("/admin/usermodules/listall")."'", 'type'=>'button'),lang("cancel"));
+echo form_button(array('icon'=>'cancel', 'href'=>site_url("/admin/usermodules/listall"), 'type'=>'link'),lang("cancel"));
 ?></div>
 <?php echo form_close();?>
