@@ -69,12 +69,15 @@ if (isset($role) && is_object($role)) :
 	echo form_hidden(array("role_id"=>$role->id, "action"=>"save"));
 endif;
 ?>
-
-<h5>rolename</h5>
+<fieldset>
+<label for="name">rolename</label>
 <input type="text" name="name" value="<?php echo set_value('name', $role->name); ?>" size="50" />
-
-<h5>Description</h5>
+</fieldset>
+<fieldset>
+<label for="description">Description</label>
 <textarea name="description" maxlength="255"><?php echo htmlspecialchars(set_value('description', $role->description)); ?></textarea>
+</fieldset>
+<fieldset>
 <table class="datagrid">
 <tr><th>Fragment</th><th>Name</th><th>Description</th></tr>
 <?php foreach($m_arr as $mod){
@@ -82,10 +85,12 @@ endif;
 }
 ?>
 </table>
-
+</fieldset>
+<fieldset>
 <div><?php
 echo form_button(array('icon'=>'save'),lang("save"));
-echo form_button(array('icon'=>'cancel', 'onclick'=>"history.go(-1);", 'type'=>'button'),lang("cancel"));
+echo form_button(array('icon'=>'cancel', 'href'=>site_url("/admin/roles"), 'type'=>'link'),lang("cancel"));
 ?>
 </div>
+</fieldset>
 </form>

@@ -21,7 +21,7 @@
 		<?php $this->load->view('topmenu_view');?>
 		<div id="greeting" style="float: right">
 		<?php if ($user = $this->fo_user->getUser()):?>
-		<span class="greeting">hello, <span class="greetingname"><?php echo  ($user->firstname != "" ? $user->firstname:$user->username);?></span></span>
+		<span class="greeting"><span class="greetingname"><?php echo  sprintf(lang('greeting'), ($user->firstname != "" ? $user->firstname:$user->username));?></span></span>
 		<?php endif; ?>
 		<?php if ($this->fo_user->isLoggedIn()):?>
 		<a href="<?php echo site_url("/login/logout"); ?>">logout</a>

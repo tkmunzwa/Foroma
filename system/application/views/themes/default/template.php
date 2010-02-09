@@ -33,12 +33,12 @@
 		<?php $this->load->view('topmenu_view');?>
 		<div id="greeting" style="float: right">
 		<?php if ($user = $this->fo_user->getUser()):?>
-		<span class="greeting">hello, <span class="greetingname"><?php echo  ($user->firstname != "" ? $user->firstname:$user->username);?></span></span>
+		<span class="greeting"><?php echo sprintf(lang("greeting"),  sprintf('<span class="greetingname">%s</span>', ($user->firstname != "" ? $user->firstname:$user->username)));?></span>
 		<?php endif; ?>
 		<?php if ($this->fo_user->isLoggedIn()):?>
-		<a href="<?php echo site_url("/login/logout"); ?>">logout</a>
+		<a href="<?php echo site_url("/login/logout"); ?>"><?php echo lang("logout");?></a>
 		<?php else :?>
-		<a href="<?php echo site_url("/login"); ?>">log in</a>
+		<a href="<?php echo site_url("/login"); ?>"><?php echo lang("login");?></a>
 		<?php endif; ?>
 		</div>
 		</div>

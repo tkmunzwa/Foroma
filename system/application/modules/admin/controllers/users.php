@@ -15,6 +15,8 @@ class Users	 extends Controller
 		$this->load->library('form_validation');
 		$this->load->library('FirePHP');
 		$this->template->set_loader($this->load);
+		$this->load->language('admin', $this->fo_lang->userLanguage());
+		$this->load->language('users', $this->fo_lang->userLanguage());
 		$this->template->write('title', 'User Management');
 		$this->groups = Doctrine::getTable('Group')->findAll();
 		$this->langs = Doctrine::getTable('Language')->findAll();
@@ -42,7 +44,7 @@ class Users	 extends Controller
 				$this->session->set_flashdata('message', "User '{$u->username}' saved");
 				redirect("admin/users/listall");
 			} else {
-				$this->template->write_view("content", "role_edit", array("data"=> array ("controller"=>"admin/users/create",
+				$this->template->write_view("content", "user_edit", array("data"=> array ("controller"=>"admin/users/create",
 				 "role"=>"new", "errors" => $this->_errors, 'groups'=>$this->groups, 'langs'=>$this->langs)));
 				$this->template->render();
 			}
@@ -74,6 +76,10 @@ class Users	 extends Controller
 				} else {
 					$u = Doctrine::getTable('User')
 					->findOneById($id);
+					/*$q = Doctrine_Query::create()
+					->from("User u")
+					->where("u.id", $id);
+					$u = $q->execute();*/
 				}
 				if ($u){
 					$u->emailaddress=$filter['email'];
@@ -90,18 +96,26 @@ class Users	 extends Controller
 					foreach($g as $item){
 						$u->Groups[] = $item;
 					}
-					$q = Doctrine_Query::create()
+					/*$q = Doctrine_Query::create()
 						->from('Language l')
 						->where('l.name', $filter['lang']);
-					$l = $q->execute();
+					$l = $q->execute();*/
+					$l = Doctrine::getTable('Language')
+					->findOneByName($filter['lang']);
 					/*@$this->firephp->info($q->getSqlQuery);
 					$l = Doctrine::getTable('Language')
 						->findOneByName($filter['lang']);
 					$this->firephp->info($l->name);*/
 					//$this->firephp->info(@$l->name);
-					$u->Language = $l;
+					if ($l) $u->Language = $l;
 					try{
 						$u->save();
+						$user = $this->fo_user->getUser();
+				//					echo "{$user->id} == {$u->id}";
+						if ($user->id == $u->id){//current user
+							$this->session->set_userdata(array('user_id'=> $u->id, 'username'=>$u->username,
+								'language'=>$u->language));
+						}
 						return TRUE;
 					} catch  (Exception $e) {
 						$this->firephp->error("doctrine item fail". $e);
@@ -147,7 +161,7 @@ class Users	 extends Controller
 						$u = Doctrine::getTable('Users')
 						->findOneByUsername($filter['username']);
 					}
-					$this->session->set_flashdata("message", "User '{$u->username}' saved");
+					$this->session->set_flashdata("message", sprintf(lang("user_saved"), $u->username));
 					redirect('admin/users/listall');
 				}else{//save failed
 					$this->_error("Error saving record");
@@ -160,14 +174,14 @@ class Users	 extends Controller
 				->findOneById($id);
 			}
 			if (!$u){
-				$this->session->set_flashdata("error", "Cannot edit record: user with id '$id' not found");
+				$this->session->set_flashdata("error", lang('user_cant_edit'). sprintf(lang('user_id_not_found'), $id));
 				redirect("admin/users/listall");
 				return;
 			}
 //			$this->template->write_view("content", "user_edit", array(
 //			 	"data"=>array("controller"=>"admin/users/edit/".$u->id, "user"=>$u, "messages"=>$this->_infos, "errors"=>$this->_errors)));			
 		} else {
-			$this->session->set_flashdata("error", "Cannot edit record: identifier not set");
+			$this->session->set_flashdata("error", lang('user_cant_edit'). lang('user_id_not_set'));
 			redirect("admin/users/listall");
 			return;
 		}
@@ -195,15 +209,15 @@ class Users	 extends Controller
 				if($u){
 					@$name = $u->username;
 					$u->delete();
-					$this->session->set_flashdata("message", "User '{$name}' deleted");
+					$this->session->set_flashdata("message", sprintf(lang("user_deleted"), $name));
 				} else {
-					$this->session->set_flashdata("error", "Could not delete record: user with id $id not found");
+					$this->session->set_flashdata("error", lang('user_cant_delete'). sprintf(lang('user_id_not_found'), $id));
 				}
 			}catch (Exception $e){
-				$this->session->set_flashdata("error", "Database error while attempting to delete user '{$name}'");
+				$this->session->set_flashdata("error", lang("db_error"));
 			}
 		} else {
-			$this->session->set_flashdata("error", "Could not delete record:  user identifier not specified");
+			$this->session->set_flashdata("error", lang('user_cant_delete').lang('user_id_not_set'));
 		}
 //		/$this->firephp->info("$error");
 		redirect("admin/users/listall");

@@ -19,9 +19,9 @@ if(isset($messages)):
 
 <table class="datagrid">
 <tr>
-<th>Username</th>
-<th>Email</th>
-<th>Edit</th>
+<th><?php echo lang('username');?></th>
+<th><?php echo lang('email_add');?></th>
+<th><?php echo lang('edit');?></th>
 <th><?php echo form_button(array('type'=>'link', 'icon'=>'add', 'href'=> site_url('admin/users/create')), lang('add')); ?></th>
 
 </tr>

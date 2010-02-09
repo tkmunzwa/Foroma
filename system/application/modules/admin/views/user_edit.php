@@ -17,38 +17,48 @@ $groups = $data['groups'];
 $langs = $data['langs'];
 if (isset($_REQUEST['groups'])) $user_groups = $_REQUEST['groups'];
 ?>
-<h5>Username</h5>
+<fieldset>
+<label><?php echo lang('username');?></label>
 <input type="text" name="username" value="<?php echo set_value('username', $user->username); ?>" size="50" />
-
-<h5>Password</h5>
+</fieldset>
+<fieldset>
+<label><?php echo lang('password');?></label>
 <input type="password" name="password" value="<?php echo set_value('password'); ?>" size="50" />
-
-<h5>Password Confirm</h5>
+</fieldset>
+<fieldset>
+<label><?php echo lang('password_repeat');?></label>
 <input type="password" name="passconf" value="<?php echo set_value('passconf'); ?>" size="50" />
-
-<h5>Email Address</h5>
+</fieldset>
+<fieldset>
+<label><?php echo lang('email_add');?></label>
 <input type="text" name="email" value="<?php echo set_value('email', $user->emailaddress); ?>" size="50" />
-<fieldset name="Language">
-<label>Language</label>
+</fieldset>
+<fieldset>
+<label><?php echo lang('language');?></label>
 <select name="lang" id="lang">
 	<option></option>
 <?php
 foreach(@$langs as $lang):
 ?>
+</fieldset>
+
 <option value="<?php echo $lang->name; ?>" <?php if ($user->language == $lang->name) echo " selected=\"selected\"";?> ><?php echo $lang->name;?></option>
 <?php endforeach;?>
 </select>
 </fieldset>
 <fieldset name="Group Membership"> 
+<label><?php echo lang('roles');?></label>
 <?php
 foreach(@$groups as $group):
 ?>
 <input type="checkbox" value="<?php echo $group->id; ?>" name="groups[]" <?php if (in_array($group->id, $user_groups)) echo " checked=\"checked\""?> /><?php echo $group->name;?><br/>
 <?php endforeach;?>
 </fieldset>
+<fieldset>																					
 <div>
 <?php
 echo form_button(array('icon'=>'save'),lang("save"));
 echo form_button(array('icon'=>'cancel', 'href'=>site_url('/admin/users/listall'), 'type'=>'link'),lang("cancel"));
 ?></div>
+</fieldset>
 </form>

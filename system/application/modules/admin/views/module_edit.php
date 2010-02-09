@@ -11,19 +11,24 @@ echo form_open($controller);
 #			var_dump($module);
 ?>
 <input type="hidden" name="action" value="save" />
-<label>Fragment</label>
+<fieldset>
+<label for="fragment">Fragment</label>
 <input type="text" name="fragment" value="<?php echo set_value('fragment', $module->fragment); ?>" size="50" />
+</fieldset>
 <input type="hidden" name="old_fragment" value="<?php echo $module->fragment; ?>" />
-
+<fieldset>
 <label for="name">Name</label>
 <input type="text" name="name" id="name" value="<?php echo set_value('name', $module->name); ?>" size="50" />
-
+</fieldset>
+<fieldset>
 <label for="description">Description</label>
 <input type="text" name="description" id="description" value="<?php echo set_value('description', $module->description); ?>" size="50" />
-
+</fieldset>
+<fieldset>
 <label for="icon">Icon</label>
 <input id="icon" type="text" name="icon" value="<?php echo set_value('icon', $module->icon); ?>" size="50" />
-
+</fieldset>
+<fieldset>
 <label for="parent">Parent</label>
 <select name="parent" id="parent">
 <option value="<null>">[None]</option>
@@ -34,21 +39,27 @@ foreach($modules as $current):
 <option value="<?php echo $current->id; ?>" <?php if ($module->parent_id == $current->id) echo " selected=\"selected\""?> ><?php echo $current->fragment;?></option>
 <?php endforeach;?>
 </select>
-
+</fieldset>
+<fieldset>
 <label for="menu">On menu?</label>
 <input type="checkbox"  name="onmenu" value="1" id="onmenu" <?php if ($module->onmenu) echo 'checked="checked"';?> />
-
+</fieldset>
+<fieldset>
 <label for="menuposition">Menu Position</label>
 <input id="menuposition" type="text" name="menuposition" value="<?php echo set_value('menu_pos', $module->menuposition); ?>" size="50" />
-
+</fieldset>
+<fieldset>
 <label for="text">Text</label>
 <input id="text" type="text" name="text" value="<?php echo set_value('text', $module->text); ?>" size="50" />
-
+</fieldset>
+<fieldset>
 <label for="hovertext">Hovertext</label>
 <input id="hovertext" type="text" name="hovertext" value="<?php echo set_value('hovertext', $module->hovertext); ?>" size="50" />
-
+</fieldset>
+<fieldset>
 <div><?php
 echo form_button(array('icon'=>'save'),lang("save"));
 echo form_button(array('icon'=>'cancel', 'href'=>site_url("/admin/usermodules/listall"), 'type'=>'link'),lang("cancel"));
 ?></div>
+</fieldset>
 <?php echo form_close();?>
