@@ -49,6 +49,9 @@ div#greeting {
 	top: 0px;
 	right: 0px;
 }
+.greetingname{
+	font-weight: bold;
+}
 
 .label {
 	font-weight: bold;

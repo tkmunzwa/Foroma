@@ -1,3 +1,17 @@
+label{
+	display: block;
+	text-align: left;
+	padding-top: 0.5em;
+	color:#7f7f7f;
+}
+fieldset{
+	background-color: #eaffea;
+	border:none;
+	font-size: 14pt;
+}
+table.datagrid{
+	background-color: #fff;
+}
 table.datagrid > tr:hover > td, table.datagrid > tbody > tr:hover > td{
 	background-color: #d8d8ff;
 }
@@ -6,4 +20,9 @@ table.datagrid > tr > td, table.datagrid > tr > th{
 	margin: 0;
 	padding: 0.2em;
 	border: none;
+}
+table.datagrid  tr  th{
+	background-color: #6e6ed0;
+	text-align: left;
+	padding: 0.1em 0.2em;
 }
