@@ -63,23 +63,23 @@ if(@$data['messages']):
 <?php
 $controller = "";
 if (isset($data) && isset($data['controller'])) $controller = $data['controller'];
-echo form_open($controller); 
+echo form_open($controller, array("method"=>"post")); 
 
 if (isset($role) && is_object($role)) :
 	echo form_hidden(array("role_id"=>$role->id, "action"=>"save"));
 endif;
 ?>
 <fieldset>
-<label for="name">rolename</label>
+<label for="name"><?php echo lang('role');?></label>
 <input type="text" name="name" value="<?php echo set_value('name', $role->name); ?>" size="50" />
 </fieldset>
 <fieldset>
-<label for="description">Description</label>
+<label for="description"><?php echo lang('description');?></label>
 <textarea name="description" maxlength="255"><?php echo htmlspecialchars(set_value('description', $role->description)); ?></textarea>
 </fieldset>
 <fieldset>
 <table class="datagrid">
-<tr><th>Fragment</th><th>Name</th><th>Description</th></tr>
+<tr><th>Fragment</th><th>Name</th><th><?php echo lang('description');?></th></tr>
 <?php foreach($m_arr as $mod){
 	displayModule("", $mod, $selected);
 }

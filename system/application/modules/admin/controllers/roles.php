@@ -7,6 +7,8 @@ class Roles extends Controller {
 
 	function Roles() {
 		parent::Controller();
+		$this->load->language('admin', $this->fo_lang->userLanguage());
+		$this->load->language('roles', $this->fo_lang->userLanguage());
 		$this->load->helper( array ('form', 'url'));
 		$this->load->library('form_validation');
 		$this->load->library('FirePHP');
@@ -30,7 +32,7 @@ class Roles extends Controller {
 		$this->form_validation->set_rules('name', 'Role name', 'required|trim|min_length[5]|max_length[12]');
 		if (@$_REQUEST['action']) {
 			if ($this->save($id, $p)){
-				$this->session->set_flashdata('message', "Role '{$p->name}' saved");
+				$this->session->set_flashdata('message', sprintf(lang('role_saved'), $p->name));
 				redirect("admin/roles/listall");
 			} else {
 				$this->template->write_view("content", "role_edit", array("data"=> array ("controller"=>"admin/roles/create",
@@ -92,13 +94,13 @@ class Roles extends Controller {
 					}
 				} else {
 					$this->firephp->error("failed to save role");
-					$this->_error("Failed to save item");
+					$this->_error(lang("save_error"));
 					return FALSE;
 				}
 				//try & save the form
 			} else {
 				$this->firephp->error("failed to save because id was not specified");
-				$this->_error("Failed to save because id was not specified");
+				$this->_error("error", lang('role_cant_edit'). lang('role_id_not_set'));
 				return FALSE;
 			}
 		}
@@ -124,13 +126,13 @@ class Roles extends Controller {
 		if ($id) {
 			if ( isset ($_REQUEST['action'])) {
 				if ($this->save($id, & $p)) {
-					$this->session->set_flashdata('message', "'{$p->name}' role saved");
-					//$this->firephp->warn("save succeeded!");
+					$this->session->set_flashdata("message", sprintf(lang('role_saved'), $p->name));
 					redirect('admin/roles/listall'); 
 					return;
 				} else {//save failed
-					$this->firephp->warn("Save failed");
-					$this->_error("Save failed");
+					@$this->firephp->warn("Save failed".join("|", $this->_errors));
+					@$this->session->set_flashdata("error", join("|", $this->_errors));
+					redirect("/admin/roles/listall");
 				}
 			} else {
 				//load data from database using id
@@ -142,13 +144,14 @@ class Roles extends Controller {
 				$p = $q->fetchOne();
 			}
 			if (!$p) {
-				$this->session->set_flashdata("error", "Cannot edit record: role with id $id not found");
+				$this->session->set_flashdata("error", lang('role_cant_edit'). sprintf(lang('role_id_not_found'), $id));
 				redirect("admin/roles/listall");
 				return;
 			}
 			//}
 		} else {
 				$this->session->set_flashdata("error", "Cannot edit role:  record not specified");
+				$this->session->set_flashdata("error", lang('role_cant_edit').lang('role_id_not_set'));
 				redirect("admin/roles/listall");
 				return;
 		}
@@ -170,23 +173,28 @@ class Roles extends Controller {
 	}
 
 	function delete($id = FALSE) {
-		$p = Doctrine::getTable('Permission')
-		->findOneById($id);
-		if ($p) {
-			try {
-				$name = $p->name;
-				$p->unlink('Modules');
-				$p->save();
-				$p->delete();
-				$this->session->set_flashdata('message', "'{$name}' role deleted");
-				redirect('admin/roles/listall');
-			} catch (Exception $e){
-				$this->session->set_flashdata('error', "Error while trying to delete role '{$name}'");
+		if ($id){
+			$p = Doctrine::getTable('Permission')
+			->findOneById($id);
+			if ($p) {
+				try {
+					$name = $p->name;
+					$p->unlink('Modules');
+					$p->save();
+					$p->delete();
+					$this->session->set_flashdata('message', sprintf(lang("role_deleted"),$name));
+					redirect('admin/roles/listall');
+				} catch (Exception $e){
+					$this->session->set_flashdata('error', lang("db_error"));
+					redirect("admin/roles/listall");
+				}
+			} else {
+				$this->session->set_flashdata("error", lang('role_cant_delete'). sprintf(lang('role_id_not_found'), $id));
 				redirect("admin/roles/listall");
 			}
-		} else {
-			$this->session->set_flashdata('error', "Record with id '{$id}' not found!");
-			redirect("admin/roles/listall");
+		} else{
+				$this->session->set_flashdata("error", lang('role_cant_delete'). sprintf(lang('role_id_not_set'), $id));
+				redirect("admin/roles/listall");		
 		}
 	}
 }

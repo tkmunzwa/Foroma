@@ -19,10 +19,10 @@ if($data['messages']):
 <?php endif;?>
 <table class="datagrid">
 <tr>
-<th>ID</th>
-<th>Role</th>
-<th>Description</th>
-<th>Edit</th>
+<th><?php echo lang('id');?></th>
+<th><?php echo lang('role');?></th>
+<th><?php echo lang('description');?></th>
+<th><?php echo lang('edit');?></th>
 <th><?php echo form_button(array('href'=> site_url('admin/roles/create'), 'type'=>'link', 'icon'=>'add'), lang("add")); ?></th>
 
 </tr>
