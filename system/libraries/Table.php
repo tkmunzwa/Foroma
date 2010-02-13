@@ -6,7 +6,7 @@
  *
  * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
- * @copyright	Copyright (c) 2008, EllisLab, Inc.
+ * @copyright	Copyright (c) 2008 - 2010, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.3.1
@@ -260,7 +260,7 @@ class CI_Table {
 				{
 					$out .= $this->template['cell_'.$name.'start'];
 					
-					if ($cell === "")
+					if ($cell === "" OR $cell === NULL)
 					{
 						$out .= $this->empty_cells;
 					}

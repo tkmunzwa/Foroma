@@ -6,7 +6,7 @@
  *
  * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
- * @copyright	Copyright (c) 2008, EllisLab, Inc.
+ * @copyright	Copyright (c) 2008 - 2010, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
@@ -479,7 +479,7 @@ function set_date(td, cal)
 	// Insert the date into the form
 	insert_date(cal);
 }
-/*
+
 //	Insert the date into the form field
 function insert_date(cal)
 {
@@ -495,9 +495,9 @@ function insert_date(cal)
 		time = fval.value.substring(10);
 		new_date = cal.date_str('n') + time;
 		fval.value = new_date;
-	}	
+	}
 }
-*/		
+
 //	Remove the date from the form field
 function remove_date(cal)
 {
