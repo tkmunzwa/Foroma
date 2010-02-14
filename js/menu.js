@@ -10,10 +10,10 @@ function removeMega(){
 }
 
 var megaConfig = {     
-		interval: 500, 
+		interval: 300, 
 		sensitivity: 4,
 		over: addMega,
-		timeout: 500, 
+		timeout: 300, 
 		out: removeMega 
 };
 
