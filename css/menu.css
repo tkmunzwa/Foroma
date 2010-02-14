@@ -1,45 +1,64 @@
-ul#menu li {
-	display: inline;
-	position: relative;
-	margin: 0px 0.4em;
-}
-
 ul#menu {
 	display: block;
 	padding: 0px;
 	margin: 0px;
-}
-ul#menu span.icon {
-	display: block!important;
+	font-size:1.2em;
+	background-color: #444;
 }
 
+ul#menu li {
+	display: inline;
+	position: relative;
+	margin: 0px 0em;
+	padding: 0 0.4em;
+	border: 1px solid gray;
+	border-collapse:collapse;
+}
+
+ul#menu span.icon {
+	display: none!important;
+}
 
 ul#menu li.mega div {
-	margin:0px 3px;
+	margin:0px 0px;
 	display: none;
 	width: 10em;
 	position: absolute;
 	top: 1.2em;
 	left: 0em;
 	background-color: #efefff;
-	border: solid 0.1em #dfdfff;
+	border: solid 0.1em #e5e5e5;
+}
+
+ul#menu li a{
+	color: #fff;
+	text-decoration:none;
+}
+
+ul#menu li.hovering{
+	background-color:#888;
 }
 
 ul#menu li.hovering div {
 	display: block;
+	background-color: #7f7f7f;
 	z-index: 2;
 }
 span.submenu{
 	display:block;
 	padding: 2px 3px;
 	font-size: 0.9em;
+	border-top: 1px solid #9f9f9f;
 }
 span.description{
 	font-size: 0.6em;
+	font-style:italic;
 	display:block;
 	margin-bottom: 5px;
 	padding: 0 0.3em 0 0.3em;
+	color:#e5e5e5;
+	cursor: default;
 }
 span.hovering {
-	background-color: #e0e0ff;
+	background-color: #444;
 }

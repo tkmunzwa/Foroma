@@ -1,41 +1,56 @@
 body {
 	margin: 0px;
 	padding: 0px;
-	font-size: 14pt;
+	font-size: 12pt;
+	background-color: #bfbfbf;
 	font-family: Arial, Helvetica, Sans-Serif;
 }
 a{
 	text-decoration: none;
+	color: #fe5050;
 }
 a:hover{
 	text-decoration: underline;
 }
 .page {
-	border: solid 2px #6fbfd9;
+	border: solid 1px #444;
+	/*-moz-border-radius: 4px;
+	background-color:#dedede;*/
+	background-color:#f9f9f9;
+	border-left: solid 1px #444;
+	border-right: solid 1px #444;
 	width: 900px;
+	/*padding: 0px 3px 0px 3px;*/
 	margin-left: auto;
 	margin-right: auto;
-	min-height: 700px;
+	min-height: 600px;
 	position: relative;
-	-moz-border-radius: 4px;
 	position: relative;
 }
+#header{
+	height: 60px;
+	padding: 4px;
+	background-color: #333;
+	color:#fff;
+	
+}
 #content{
-	margin-right: 100px;
 	position: relative;
-	padding: 2px 2px 2px 2px;
-	margin-bottom: 25px;
+	/*padding: 2px 2px 2px 2px;*/
+	margin-bottom: 27px;
 	/*margin: 4px 0px 4px 0px;*/
 }
 
+.hassidebar{
+	margin-right: 100px;
+}
+
 #topnav {
-	background-color: #efefff;
-	height: 60px;
 	position: relative;
 }
 
 #footer{
-	background-color: #d8d8ff;
+	background-color: #444;
 	color: #ffffff;
 	text-align: center;
 	position: absolute;
@@ -47,7 +62,8 @@ a:hover{
 div#greeting {
 	position: absolute;
 	top: 0px;
-	right: 0px;
+	right: 5px;
+	font-size: 0.8em;
 }
 .greetingname{
 	font-weight: bold;
@@ -70,7 +86,7 @@ td.label {
 .addresscontainer {
 	margin: 2px;
 	border: solid 1px #6fbfd9;
-	-moz-border-radius: 4px;
+	/*-moz-border-radius: 4px;*/
 	min-width: 200px;
 	overflow: visible;
 }
@@ -123,8 +139,8 @@ a img {
 div.error{
 	color: #ff0000;
 	background-color: #ffefef;
-	width: 20em;
-	margin: 20px;
+	width: auto;
+	/*margin-top: 20px;*/
 	overflow: visible;
 	white-space: nowrap;
 }
