@@ -25,14 +25,14 @@
 		$item = $items[$k];
 ?>
 <li class="mega">
-<a href="<?php echo site_url($item->fragment);?>"><span id="icon"><img src="<?php echo base_url()."images/icons/".$item->icon;?>" /></span>
+<a href="<?php echo site_url($item->fragment);?>"><span class="icon"><img src="<?php echo base_url()."images/icons/".$item->icon;?>" /></span>
 <span><?php echo $item->text;?></span></a>
 <?php if (count ($item->Children) > 0): ?>
 <!-- insert drop down graphic here/hint that hover shows more -->
 <div>
 	<?php foreach($item->Children as $child): 
 	if (!$child->onmenu) continue; ?>
-	<span class="submenu"><a href="<?php echo site_url($child->fragment);?>"><span title="<?php echo $child->hovertext;?>"><?php echo $child->text;?></a></span></a>
+	<span class="submenu"><a href="<?php echo site_url($child->fragment);?>"><span title="<?php echo $child->hovertext;?>"><?php echo $child->text;?></span></a>
 	<span class="description"><?php echo $child->description;?></span>
 	</span>
 	<? endforeach; ?>
