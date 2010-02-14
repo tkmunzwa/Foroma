@@ -16,7 +16,7 @@
    </head>
    <body>
       <div class="page">
-         <div id"header">
+         <div id="header">
             <?php echo $header ?>
          </div>
 		<div id="topnav">
