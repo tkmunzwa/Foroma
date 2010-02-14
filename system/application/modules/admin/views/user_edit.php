@@ -1,6 +1,8 @@
+<?php if ($v_errors = validation_errors()): ?>
 <div class="error">
-<?php echo validation_errors(); ?>
+<?php echo $v_errors; ?>
 </div>
+<?php endif ?>
 <form method="post">
 <?php
 $controller = "";
@@ -23,11 +25,11 @@ if (isset($_REQUEST['groups'])) $user_groups = $_REQUEST['groups'];
 </fieldset>
 <fieldset>
 <label><?php echo lang('password');?></label>
-<input type="password" name="password" value="<?php echo set_value('password'); ?>" size="50" />
+<input type="password" name="password" value="<?php // echo set_value('password'); ?>" size="50" />
 </fieldset>
 <fieldset>
 <label><?php echo lang('password_repeat');?></label>
-<input type="password" name="passconf" value="<?php echo set_value('passconf'); ?>" size="50" />
+<input type="password" name="passconf" value="<?php //echo set_value('passconf'); ?>" size="50" />
 </fieldset>
 <fieldset>
 <label><?php echo lang('email_add');?></label>
@@ -40,9 +42,8 @@ if (isset($_REQUEST['groups'])) $user_groups = $_REQUEST['groups'];
 <?php
 foreach(@$langs as $lang):
 ?>
-</fieldset>
 
-<option value="<?php echo $lang->name; ?>" <?php if ($user->language == $lang->name) echo " selected=\"selected\"";?> ><?php echo $lang->name;?></option>
+<option value="<?php echo $lang->name; ?>" <?php  echo set_select('lang', $lang->name, ($lang->name == $user->language));?> ><?php echo $lang->name;?></option>
 <?php endforeach;?>
 </select>
 </fieldset>
@@ -51,7 +52,7 @@ foreach(@$langs as $lang):
 <?php
 foreach(@$groups as $group):
 ?>
-<input type="checkbox" value="<?php echo $group->id; ?>" name="groups[]" <?php if (in_array($group->id, $user_groups)) echo " checked=\"checked\""?> /><?php echo $group->name;?><br/>
+<input type="checkbox" value="<?php echo $group->id; ?>" name="groups[]" <?php echo set_checkbox('groups[]', $group->id); ?> <?php if (in_array($group->id, $user_groups)) echo " checked=\"checked\""?> /><?php echo $group->name;?><br/>
 <?php endforeach;?>
 </fieldset>
 <fieldset>																					
