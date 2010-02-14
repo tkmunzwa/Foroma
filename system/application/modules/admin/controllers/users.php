@@ -27,25 +27,40 @@ class Users	 extends Controller
 			$this->_error($e);	
 
 	}
-
+	
+	/**
+	 * Default controller. Default action is to list all users
+	 * @return 
+	 */
 	function index(){
 		$this->listall();
 	}
 
+	/**
+	 * Controller to handle creation of new users. On initial load, it displays blank user form. Also handles submission of
+	 * the said form & detects using 'action' variable. If form is being submitted, attempts to save data to db. Redirects 
+	 * to default controller on success, otherwise displays error message above form on error
+	 * 
+	 * @return 
+	 */
 	function create(){
 		$id = FALSE;
 		$u = FALSE;
-		$this->form_validation->set_rules('password', 'Password', 'required|matches[passconf]');
-		$this->form_validation->set_rules('passconf', 'Password Confirmation', 'required');
-		$this->form_validation->set_rules('username', 'Username', 'required|min_length[5]|max_length[12]');
-		$this->form_validation->set_rules('email', 'Email', 'required|valid_email');
+		$this->form_validation->set_rules('password', lang('password'), 'required|matches[passconf]');
+		$this->form_validation->set_rules('passconf', lang('password_repeat'), 'required');
+		$this->form_validation->set_rules('username', lang('username'), 'required|min_length[5]|max_length[12]');
+		$this->form_validation->set_rules('lang', lang('language'), 'required');
+		$this->form_validation->set_rules('email', lang('email_add'), 'required|valid_email');
 		if (@$_REQUEST['action']) {
 			if ($this->save($id, $u)){
-				$this->session->set_flashdata('message', "User '{$u->username}' saved");
-				redirect("admin/users/listall");
+				$this->session->set_flashdata('message', sprintf(lang('user_saved'), $u->username));
+				redirect("admin/users");
 			} else {
-				$this->template->write_view("content", "user_edit", array("data"=> array ("controller"=>"admin/users/create",
+				$u = new User();//set dummy user so not to throw errors on renders
+				$u->id = $_REQUEST['user_id'];	
+				$this->template->write_view("content", "user_edit", array("data"=> array ('user'=>$u, "controller"=>"admin/users/create",
 				 "role"=>"new", "errors" => $this->_errors, 'groups'=>$this->groups, 'langs'=>$this->langs)));
+				 $this->firephp->error($this->_errors);
 				$this->template->render();
 			}
 		} else {
@@ -57,7 +72,13 @@ class Users	 extends Controller
 		}
 	}
 
-	function save($id = FALSE, &$u = FALSE){
+	/**
+	 * 
+	 * @return 
+	 * @param object $id[optional]
+	 * @param object $u[optional]
+	 */
+	private function save($id = FALSE, &$u = FALSE){
 		$error = false;
 		$filter = array();
 		if(!$id) @$id = $_REQUEST['user_id'];
@@ -119,18 +140,18 @@ class Users	 extends Controller
 						return TRUE;
 					} catch  (Exception $e) {
 						$this->firephp->error("doctrine item fail". $e);
-						$this->_error('Failed to save record');
+						$this->_error(lang('db_error'));
 						if ($id == "new") //if save failed for new item - keep form id as 'new'
 							$u->id = "new";
 						return FALSE;
 					}
 				}else{
-					$this->_error("Record not saved because specified ID not found in database. Might have been deleted recently");
+					$this->_error(lang('user_cant_save').lang('user_id_not_found'));
 					return FALSE;
 				}
 				//try & save the form
 			} else {
-				$this->_error("Record not saved because ID not set");
+				$this->_error(lang('user_cant_save').lang('user_id_not_set'));
 				return FALSE;
 			}
 		}
@@ -189,7 +210,6 @@ class Users	 extends Controller
 		$this->template->write_view("content", "user_edit",array(
 		 "data"=>array("controller"=>"admin/users/edit/".$u->id, "user"=>$u, 'groups'=>$this->groups, 'langs'=>$this->langs, "messages"=>$this->_infos, "errors"=>$this->_errors)));
 		$this->template->render();
-
 	}
 	
 	function listall(){

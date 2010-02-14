@@ -7,6 +7,7 @@ $lang['language'] = "Language";
 $lang['roles'] = "Roles";
 $lang['user_saved'] = "User '%s' saved";
 $lang['user_deleted'] = "User '%s' deleted";
+$lang['user_cant_save'] = "Cannot save user record: ";
 $lang['user_cant_edit'] = "Cannot edit user record: ";
 $lang['user_cant_delete'] = "Cannot delete user record: ";
 $lang['user_id_not_found'] = "id %s not found";

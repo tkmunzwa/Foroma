@@ -7,6 +7,7 @@ $lang['language'] = "Mutauro";
 $lang['roles'] = "Zvigaro";
 $lang['user_saved'] = "munhu '%s' achengetedzwa";
 $lang['user_deleted'] = "Munhu '%s' adzimwa";
+$lang['user_cant_save'] = "Handikwanisi kuchengeta munhu: ";
 $lang['user_cant_edit'] = "Handikwanisi kuchinja munhu: ";
 $lang['user_cant_delete'] = "Handikwanisi kudzima munhu: ";
 $lang['user_id_not_found'] = "ID inoti '%s' yashaikwa";
