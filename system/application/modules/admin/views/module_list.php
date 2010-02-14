@@ -59,13 +59,16 @@ if($data['messages']):
 <?php endforeach;?>
 </div>
 <?php endif;?>
+
+
+
 <?php
 $controller = "";
 if (isset($data) && isset($data['controller'])) $controller = $data['controller'];
 echo form_open($controller); 
 ?>
 <table class="datagrid">
-<tr><th>Location</th><th>Edit</th><th><input type="checkbox" id="delete_checkbox_master" /></th>
+<tr><th><?php echo lang('location');?></th><th><?php echo lang('edit');?></th><th><input type="checkbox" id="delete_checkbox_master" /></th>
 <th><input type="checkbox" id="add_checkbox_master" /></th></tr>
 <?php foreach($avail_arr as $mod){
 	displayModule("", $avail, $db_arr);
