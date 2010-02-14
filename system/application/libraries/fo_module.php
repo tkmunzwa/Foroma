@@ -20,7 +20,7 @@ class FO_Module{
 		if (is_dir($wpath)){
 			$handle = opendir($wpath);
 			$root = new Module();
-			
+
 		    while (false !== ($file = readdir($handle))) {
 		    	if ($file == "." || $file == "..") continue;
 		    	if (is_dir($wpath."/".$file)) {
@@ -37,32 +37,39 @@ class FO_Module{
 		return $root;
 	}
 
+	/**
+	 * Function that returns all modules in a certain path
+	 * @return 
+	 * @param object $wpath[optional] path (full path)
+	 * @param object $fragment[optional] current file fragment
+	 * @param object $filepart[optional] filename part
+	 */
 	function getHMVCModules($wpath = "", $fragment = ""){
 		$root = new Module();
 		$root->fragment = $fragment;
 		
-		if (is_dir($wpath)){
+		if (is_dir($wpath)){ //is path a directory? if so, find file names inside
 			$handle = opendir($wpath);
 		    while (false !== ($file = readdir($handle))) {
-		    	if ($file[0] == "." || $file == "..") continue;
-		    	if (is_dir($wpath."/".$file)) {
+		    	if ($file[0] == "." || $file == "..") continue; 
+		    	if (is_dir($wpath."/".$file)) { //curent 'file' is a directory
 		    		$newpath = $wpath."/".$file;
 		    		$ret = $this->getHMVCModules($newpath, "$fragment/$file");
-	    			if ($ret) { //ret is like a surrogent parent
-	    				if ($fragment == $file) {
-	    					foreach($ret->Children as $child){
+	    			if ($ret) { //ret is like a surrogent parent, take it's childrej & make them current root elements'
+	    				if ($fragment == $file) { //if fragment is the same name as file part
+	    					foreach($ret->Children as $child){//take it's childrej & make them current root elements'
 	    						$root->Children[] = $child;
 	    					}
-						} else {
+						} else { //otherwise returned element is child of current root element
 							$root->Children[] = $ret;//$child;
 						}
 	    			}
-		    	} else {
+		    	} else { //constructed path is infact a file
 		    		if (preg_match('/.php$/i', $file) > 0 ) {
 		    			$filep = substr($file, 0, strlen($file)-4 );
 			    		$newpath = $wpath."/".$filep;
-						if ($fragment == $filep){	
-		    				$ret = $this->getHMVCModules($newpath, "$fragment");
+						if ($fragment == $filep){
+		    				$ret = $this->getHMVCModules($newpath, "$fragment", TRUE);
 						}else{
 							$ret = $this->getHMVCModules($newpath, "$fragment/$filep");
 						}
@@ -97,67 +104,10 @@ class FO_Module{
 		return $root;
 	}
 	
-/*	function getModules($path = "", $fragment = ""){
-		$root = false;
-		$dirs = false;
-		$files = false;
-		
-//		echo "finding out about '$path'<br/>";
-		$wpath =  dirname(dirname(__FILE__)."..")."/controllers";
-		$wpath .= "/".$path;
-//		echo $wpath;
-		if ($path == ""){
-			$root = new Module();
-			$root->fragment = "";
-		} else {
-			$root = new Module();
-			$root->fragment = $path;
-		}
-  // 		$root->text = "roott"; 
-		if (is_dir($wpath)){
-//			echo "$wpath resolves to dir<br/>";
-			$handle = opendir($wpath);
-		    while (false !== ($file = readdir($handle))) {
-		    	if ($file[0] == "." || $file == "..") continue;
-		    	if (is_dir($wpath."/".$file)) {
-//		    		echo "found directory $file<br/>"; 
-		    		if ($path == "") $newpath = $file;
-		    		else $newpath = $path."/".$file;
-		    		$ret = $this->getModules($newpath);
-	    			if ($ret) { //ret is like a surrogent parent
-	    				//foreach($ret->Children as $child){
-	    					$root->Children[] = $ret;//$child;
-	    				//}
-	    			}
-		    	} else {
-		    		if (preg_match('/.php$/i', $file) > 0 ) {
-//		    			echo "found php file $file<br/>";
-		    			$filep = substr($file, 0, strlen($file)-4 );
-			    		if ($path == "") $newpath = $filep;
-			    		else $newpath = $path."/".$filep;
-		    			$ret = $this->getModules($newpath);
-		    			if ($ret) { //ret is like a surrogent parent
-		    				foreach($ret->Children as $child){
-		    					$root->Children[] = $child;
-		    				}
-		    			}
-		    		} else{
-//		    			echo "non-php file $file<br/>";
-		    		}
-		    	}
-    		}
-    		closedir($handle);
-			//scan files in dir & other dirs, adding to $files and $dirs
-		}else if (is_file($wpath.".php")){
-//			echo "$wpath resolves to file";
-			$ret = $this->_parseFile($path, $wpath.".php");
-			if ($ret) $root->Children[] = $ret;
-		} else {
-//			echo "$wpath resolve to unreadable file/dir";
-		}
-		return $root;
-	}*/
-	
+	/**
+	 * Function to retrieve all modules
+	 * @return 
+	 */
 	function getModules(){
 		return $this->getHMVCRootModule();
 	}
@@ -170,14 +120,14 @@ class FO_Module{
 		
 	}
 	
-	function _parseFile($path, $wpath){
-//		echo "Including file $wpath<br/>";
+	private function _parseFile($path, $wpath){
 		$root = false;
 		$module = false;
 		$components = split("/", $path);
 		$cName = $components[(count($components)-1)];
-		if (!class_exists($cName)){
-			include($wpath);
+
+ 		if (!class_exists($cName, false)){//DO NOT AUTOLOAD. *****! spent 4 hours trying to figure out why class loading was wonky
+			include_once($wpath);
 		}
 		$ignoreNames = array("get_instance", "controller", "ci_base", "database", strtolower($cName),
 			"helpers", "helper", "language", "library", "model", "models", "module", "modules",
