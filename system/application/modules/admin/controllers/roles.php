@@ -4,7 +4,7 @@
 class Roles extends Controller {
 	var $_errors = FALSE;
 	var $_infos = FALSE;
-	var $permissions = false;
+	var $permissions = false; 
 
 	function Roles() {
 		parent::Controller();
