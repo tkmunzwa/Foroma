@@ -78,8 +78,9 @@ endif;
 <textarea name="description" maxlength="255"><?php echo htmlspecialchars(set_value('description', $role->description)); ?></textarea>
 </fieldset>
 <fieldset>
+<label><?php echo lang('allowed_locations');?></label>
 <table class="datagrid">
-<tr><th>Fragment</th><th>Name</th><th><?php echo lang('description');?></th></tr>
+<tr><th><?php echo lang('fragment');?></th><th><?php echo lang('name');?></th><th><?php echo lang('description');?></th></tr>
 <?php foreach($m_arr as $mod){
 	displayModule("", $mod, $selected);
 }

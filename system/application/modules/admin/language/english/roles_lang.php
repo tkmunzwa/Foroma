@@ -1,5 +1,9 @@
 <?php
 $lang['roles'] = "Roles";
+$lang['role'] = "Role";
+$lang['name'] = "Name";
+$lang['fragment'] = "Fragment";
+$lang['allowed_locations'] = "Allowed pages";
 $lang['role_saved'] = "Role '%s' saved";
 $lang['role_deleted'] = "Role '%s' deleted";
 $lang['role_cant_edit'] = "Cannot edit role: ";

@@ -1,5 +1,9 @@
 <?php
 $lang['role'] = "Chigaro";
+$lang['roles'] = "Zvigaro";
+$lang['name'] = "Zita";
+$lang['fragment'] = "Chidimbu";
+$lang['allowed_locations'] = "Nzvimbo dzinotenderwa";
 $lang['description'] = "Tsanangudzo";
 $lang['role_saved'] = "Chigaro '%s' chachengetwa";
 $lang['role_deleted'] = "Chigaro '%s' chadzimwa";

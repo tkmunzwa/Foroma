@@ -1,6 +1,15 @@
 <?php
 //FIXME: translate
 $lang['location'] = 'Nzvimbo';
+$lang['name'] = 'Zita';
+$lang['fragment'] = 'Chidimbu';
+$lang['icon'] = 'Mufananidzo';
+$lang['parent'] = 'Mubereki';
+$lang['none'] = '[Hapana]';
+$lang['on_menu'] = 'Ratidza pasarudzo?';
+$lang['menu_position'] = 'Nzvimbo musarudzo';
+$lang['text'] = 'Zvanonyorwa musarodzo';
+$lang['hovertext'] = 'Zvinyorwa Zvakaputirwa musarudzo';
 $lang['fragment_saved'] = "Nzvimbo '%s' yachengetwa";
 $lang['fragment_deleted'] = "Nzvimbo '%s' yadzimwa";
 $lang['fragment_cant_save'] = "Ndatadza kuchengeta nzvimbo: ";
