@@ -36,7 +36,7 @@ a:hover{
 }
 #content{
 	position: relative;
-	/*padding: 2px 2px 2px 2px;*/
+	padding: 0.3em 0.5em;
 	margin-bottom: 27px;
 	/*margin: 4px 0px 4px 0px;*/
 }
