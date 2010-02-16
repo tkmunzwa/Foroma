@@ -34,3 +34,7 @@ table.datagrid  tr  th{
 table.datagrid tr.rowdark{
 	background-color: #f5f5f5;
 }
+
+a.sexybutton:hover {
+	text-decoration:none;
+}
