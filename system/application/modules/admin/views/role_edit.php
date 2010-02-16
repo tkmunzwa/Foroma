@@ -1,49 +1,6 @@
 <?php
 @$role = $data['role'];
-
-$selected = array();
-foreach(@$role->Modules as $m):
-	$selected[$m->id] = $m->id;
-endforeach;
-
-$q = Doctrine_Query::create()
-	->from('Module m')
-	->orderBy('m.fragment');
-
-$modules = $q->execute();
-$m_arr = array();
-//set allmodules in a flat array
-foreach($modules as $module){
-	$m_arr[$module->id] = $module;
-}
-//link modules to parents
-foreach($m_arr as $module){
-	if ($module->parent_id != "")
-		$m_arr[$module->parent_id]->Children[] = $module;
-}
-//remove non-root nodes from array
-foreach($m_arr as $module){
-	if ($module->parent_id != "")
-	unset($m_arr[$module->id]);
-}
-
-function displayModule($parentID, $mod, &$selected, $level=1){
-	if ($mod =="" || !isset($mod->id)) return;
-	if($mod->id == $parentID) return FALSE;//DANGER! Will Robinson. parent == child? could cause infinite loop.
-	echo "<tr><td>";
-	for($cnt=0; $cnt < $level; $cnt++){
-		echo "&nbsp;&nbsp;";
-	}
-	echo "<input type=\"checkbox\" name=modules[] value=\"$mod->id\"".
-			(isset($selected[$mod->id])? " checked=\"checked\"":"")."/>";
-	echo $mod->fragment;
-	echo "</td><td>$mod->text</td>";
-	echo "<td>$mod->description</td></tr>";
-	foreach($mod->Children as $child){
-		displayModule($mod->id, $child, $selected, $level+1);
-	}
-}
-
+@$permissions = $data['permissions'];
 ?>
 <div class="error">
 <?php echo validation_errors(); 
@@ -65,26 +22,35 @@ $controller = "";
 if (isset($data) && isset($data['controller'])) $controller = $data['controller'];
 echo form_open($controller, array("method"=>"post")); 
 
+$role_permissions = array();
 if (isset($role) && is_object($role)) :
+	foreach($role->Permissions as $p):
+		$role_permissions[] = $p->id; 
+	endforeach;
 	echo form_hidden(array("role_id"=>$role->id, "action"=>"save"));
 endif;
 ?>
 <fieldset>
-<label for="name"><?php echo lang('role');?></label>
+<div><?php
+echo form_button(array('icon'=>'save'),lang("save"));
+echo form_button(array('icon'=>'cancel', 'href'=>site_url("/admin/roles"), 'type'=>'link'),lang("cancel"));
+?>
+</div>
+</fieldset>
+<fieldset>
+<label for="name"><?php echo lang('name');?></label>
 <input type="text" name="name" value="<?php echo set_value('name', $role->name); ?>" size="50" />
 </fieldset>
+
 <fieldset>
-<label for="description"><?php echo lang('description');?></label>
-<textarea name="description" maxlength="255"><?php echo htmlspecialchars(set_value('description', $role->description)); ?></textarea>
-</fieldset>
-<fieldset>
-<label><?php echo lang('allowed_locations');?></label>
+<label><?php echo lang('permissions');?></label>
 <table class="datagrid">
-<tr><th><?php echo lang('fragment');?></th><th><?php echo lang('name');?></th><th><?php echo lang('description');?></th></tr>
-<?php foreach($m_arr as $mod){
-	displayModule("", $mod, $selected);
-}
-?>
+<?php foreach($permissions as $permission):?>
+<tr><td>
+<input type="checkbox" value="<?php echo $permission->id; ?>" name="permissions[]" <?php echo set_checkbox('permissions[]', $permission->id); ?>
+<?php if (in_array($permission->id, $role_permissions)) echo " checked=\"checked\""?> /><?php echo $permission->name;?>
+</td></tr>
+<? endforeach?>
 </table>
 </fieldset>
 <fieldset>
