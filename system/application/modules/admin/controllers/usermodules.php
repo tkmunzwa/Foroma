@@ -95,7 +95,6 @@ class UserModules extends Controller {
 				if ($filter['onmenu']) $module->onmenu = true; else $module->onmenu=false;
 				try {
 					$module->save();
-					$this->firephp->warn('returning true');
 					return TRUE;
 				} catch(Exception $e) {
 					$this->firephp->error("doctrine item fail ".$e->getMessage());
