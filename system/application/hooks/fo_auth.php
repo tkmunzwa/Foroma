@@ -1,5 +1,7 @@
 <?php
 /**
+ * Security hook for CodeIgniter.
+ * 
  * This file is an Foroma addition
  * (c) 2009 Tapiwa Munzwa
  * 	tapiwa@munzwa.tk
@@ -7,6 +9,12 @@
 class FO_Auth_SecurityHook{
 	var $CI;
 	
+	/**
+	 * Hook method that is called before controller is invoked
+	 * Determines if page should be displayed to currently logged in user
+	 * @return nothing of interest
+	 * @param object $instance CI instance reference
+	 */
 	function checkPermissions(&$instance){
 		$segments = array();
 		$allowAccess = FALSE;
@@ -26,7 +34,7 @@ class FO_Auth_SecurityHook{
 ;
 		
 		//if using HMVV compartmentalisation TODO: check config var or autodetect
-		if(true){
+		if(true){ //set to true because I *am* using HMVC. need to work some magic to determine actual URL fragment 
 			$cnt = 1;
 			for($cnt =1; $this->CI->uri->segment($cnt)!== false; $cnt++){
 				$segments[] = $this->CI->uri->segment($cnt);
@@ -41,23 +49,26 @@ class FO_Auth_SecurityHook{
 				}
 			}
 			$fragment = join("/", $segments);
-		}else{
+		}else{ //if HMVC is not in use, URL fragment is pretty straightforward. dir + class + method
 			if ($dir)$segments[] = $dir;
 			if($class) $segments[] = $class;
 			$segments[] = $method;
 		}
 		$fragment = join("/", $segments);
+		
+		//Determine the module that owns this fragment
 		$q = Doctrine_Query::create()
 			->from('Module m')
 			->where('m.fragment = ?', $fragment );
-		// if method is 'index' it's possible only actual method was not set up in security
+		// if method called is 'index' it's possible parent URL was set up in security, and not 'index' method
+		//i.e. we can have "some/directory/index" method using security defined for "some/directory" instead
 		//make an exception, just in case
 		if ($method == "index"){
 			$q = $q->orWhere('m.fragment = ?', join("/", array_slice($segments, 0, (count($segments)-1))));
 		}
 		$module = $q->fetchOne();
 		if (!$module || count($module) < 1){ //not matching results, let's try again with more generous parameters
-			//check to see if parent is defined with no children (if no children defined, then access defaults to all children)
+			//check to see if parent is defined with no children (if _no_ children defined, then access is inherited by all children)
 			$q = Doctrine_Query::create()
 				->from('Module m')
 				->where('m.fragment = ?', join("/", array_slice($segments, 0, (count($segments)-1) )));
@@ -69,26 +80,29 @@ class FO_Auth_SecurityHook{
 			$module = $q->fetchOne();
 			
 		}
-		if ($module && count ($module) > 0)  {//page not public/free for all based on controller
+		
+		//If we get up to here with module still empty, module for fragment is not defined
+		if ($module && count ($module) > 0)  {
 			if (!$module->ispublic) { //If page is not public
 				$user = $this->CI->fo_user->getUser();
 				if (!$user){
-					$allowAccess = FALSE;
+					$allowAccess = FALSE; //user not logged in. page not public = NO Access!
 				} else {
 					foreach($user->Groups as $group) {
 						foreach($group->Permissions as $perm){
 							foreach($perm->Modules as $mod){
 								if ($this->_hasPermission($fragment, $mod)) {
 									$allowAccess = TRUE;
+									break;
 								}
 							}
 						}
 					}
 				}
-			} else {
+			} else { //module is public. yipee.
 				$allowAccess = TRUE;
 			}
-		} else {
+		} else { //Oh oh. Security for this URL fragment is NOT in database. bail out
 				$error =& load_class('Exceptions');
 				$heading = "Security not defined"; //FIXME: i18lize
 				$message = sprintf("The security for the resource you are trying to access (%s) is not configured yet", "<b>$fragment</b>") ; //FIXME: i18lize
@@ -104,11 +118,17 @@ class FO_Auth_SecurityHook{
 		}
 	}
 	
+	/**
+	 * Method to check if given module has access (permissions) to access passed URL fragment
+	 * @return 
+	 * @param string $fragment URL fragment to be checked against
+	 * @param object $module The module to test for access
+	 */
 	function _hasPermission($fragment, $module){
 		if (!$module) return FALSE;
 		if ($fragment === $module->fragment){
 			return TRUE;
-		//FIXME: remove assumption that parent contains firstpart of child below & just search everything
+		//TODO: remove assumption that parent contains firstpart of child below & just search everything
 		//now it assumes /admin/ is parent of /admin/users but it should be possible for /admin/home to be parent of /admin/users
 		} else if (stripos($fragment, $module->fragment) !== false){ //module is parent of said fragment. 
 			if ($fragment == $module->fragment."/index"){
