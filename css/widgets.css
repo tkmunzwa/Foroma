@@ -1,13 +1,15 @@
 label{
 	display: block;
 	text-align: left;
-	padding-top: 0.5em;
+	padding-top: 0.3em;
 	color:#7f7f7f;
 }
 fieldset{
-	background-color: white;
+	background-color: #eaeaea;
 	border:none;
 	font-size: 1.2em;
+	padding: 0.2em 0.2em 0.4em 0.2em;
+	margin: 0;
 }
 table.datagrid{
 	background-color: #dedede;
