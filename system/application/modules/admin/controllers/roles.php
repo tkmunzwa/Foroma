@@ -14,7 +14,10 @@ class Roles extends Controller {
 		$this->load->library('form_validation');
 		$this->load->library('FirePHP');
 		$this->template->set_loader($this->load);
-		$this->permissions = Doctrine::getTable('Permission')->findAll();
+		$this->permissions = Doctrine_Query::create()
+			->from('Permission')
+			->orderBy('name')
+			->execute();
 		$this->template->write('title', 'Groups');
 		if ($message = $this->session->flashdata('message'))
 			$this->_info($message);	
