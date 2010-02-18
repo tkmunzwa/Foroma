@@ -20,9 +20,20 @@ class FO_Module{
 		if (is_dir($wpath)){
 			$handle = opendir($wpath);
 			$root = new Module();
+			
+			$arr_files = array();
 
+			//Get files in module root directory into array, then sort the array
 		    while (false !== ($file = readdir($handle))) {
 		    	if ($file == "." || $file == "..") continue;
+		    	$arr_files[] = $file;
+			}
+	    	closedir($handle);
+			sort($arr_files);
+			
+			//process each file
+			foreach($arr_files as $file){
+
 		    	if (is_dir($wpath."/".$file)) {
 					if (is_dir($wpath."/".$file."/controllers")){
 			    		$ret = $this->getHMVCModules($wpath."/".$file."/controllers", $file);
@@ -32,7 +43,6 @@ class FO_Module{
 					} 
 		    	}
 			}
-	    	closedir($handle);
 		}
 		return $root;
 	}
@@ -50,8 +60,16 @@ class FO_Module{
 		
 		if (is_dir($wpath)){ //is path a directory? if so, find file names inside
 			$handle = opendir($wpath);
+			$arr_files = array();
 		    while (false !== ($file = readdir($handle))) {
-		    	if ($file[0] == "." || $file == "..") continue; 
+		    	if ($file[0] == "." || $file == "..") continue;
+				$arr_files[] = $file; 
+			}
+			closedir($handle);
+			sort($arr_files);
+			
+			
+			foreach($arr_files as $file){
 		    	if (is_dir($wpath."/".$file)) { //curent 'file' is a directory
 		    		$newpath = $wpath."/".$file;
 		    		$ret = $this->getHMVCModules($newpath, "$fragment/$file");
@@ -92,7 +110,6 @@ class FO_Module{
 		    		}
 		    	}
     		}
-    		closedir($handle);
 			//scan files in dir & other dirs, adding to $files and $dirs
 		}else if (is_file($wpath.".php")){
 //			echo "$wpath resolves to file";
@@ -120,6 +137,12 @@ class FO_Module{
 		
 	}
 	
+	/**
+	 * Function that parses a Controller file to get public controller methods
+	 * @return 
+	 * @param object $path
+	 * @param object $wpath
+	 */
 	private function _parseFile($path, $wpath){
 		$root = false;
 		$module = false;
@@ -136,7 +159,11 @@ class FO_Module{
 		if (class_exists($cName)){
 			$root = new Module();
 			$root->fragment = $path;
+			
+			//fetch all controller methods
 			$methods = get_class_methods($cName);
+			
+			sort($methods);//arrange methods alphabetically
 			foreach($methods as $method){
 				if ($method[0] === "_") continue; //ignore private methods
 					if (array_search(strtolower($method), $ignoreNames)) {
