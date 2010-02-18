@@ -18,8 +18,14 @@ class Users	 extends Controller
 		$this->load->language('admin', $this->fo_lang->userLanguage());
 		$this->load->language('users', $this->fo_lang->userLanguage());
 		$this->template->write('title', 'User Management');
-		$this->groups = Doctrine::getTable('Group')->findAll();
-		$this->langs = Doctrine::getTable('Language')->findAll();
+		$this->groups = Doctrine_Query::create()
+			->from('Group')
+			->orderBy('name')
+			->execute();
+		$this->langs = Doctrine_Query::create()
+			->from('Language')
+			->orderBy('name')
+			->execute();
 		
 		if ($message = $this->session->flashdata('message'))
 			$this->_info($message);	
