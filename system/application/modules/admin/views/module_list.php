@@ -6,7 +6,7 @@ $db = @$data['db'];
 //print_r($db->toArray());
 $db_arr = array();
 foreach(@$db as $m):
-	$db_arr[$m->fragment] = $m->fragment;
+	$db_arr[$m->fragment] = $m;
 endforeach;
 $avail_arr = array();
 //set allmodules in a flat array
@@ -17,11 +17,15 @@ $avail_arr[] = $avail;
 }*/
 
 function displayModule($parentID, $mod, &$db_arr, $level=1){
-	$indb = isset($db_arr[$mod->fragment]);
+	$realModule = false;
+	if ($indb = isset($db_arr[$mod->fragment])){
+		$realModule = $db_arr[$mod->fragment];
+	}
 	//if ($mod =="" || !isset($mod->fragment)) return;
 	//if($mod->id == $parentID) return FALSE;//DANGER! Will Robinson. parent == child? could cause infinite loop.
 	if($level < 3) $indent =1; else $indent = $level - 1;
 	echo "<tr><td>";
+	echo ($realModule && $realModule->onmenu)?"<img style=\"float:right;\" src='../../images/icons/silk/application_side_list.png' />":"";
 	for($cnt=0; $cnt < $indent; $cnt++){
 		echo "&nbsp;&nbsp;&nbsp;&nbsp;";
 	}
@@ -84,7 +88,6 @@ echo form_button(array('type'=>'submit', 'icon'=>'save'), lang('save'));
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#delete_checkbox_master').change(function(){
-//		alert('changed!');
 		if ($('#delete_checkbox_master').attr('checked')){
 			$('input.remove_checkbox').attr('checked', 'checked');
 		} else {
@@ -92,7 +95,6 @@ $(document).ready(function(){
 		}
 	});
 	$('#add_checkbox_master').click(function(){
-//		alert('clicked!');
 		if ($('#add_checkbox_master').attr('checked')){
 			$('input.add_checkbox').attr('checked', 'checked');
 		} else {
