@@ -1,5 +1,5 @@
 <?php
-class Demo extends Controller {
+class Demo extends Controller implements IAdmin {
    
 	function Demo(){
 		parent::Controller();
@@ -7,6 +7,11 @@ class Demo extends Controller {
 
 	}
    
+   	function misc(){
+   		$this->load->library('FO_ClassFinder');
+		$this->fo_classfinder->setMatchInterface('IAdmin');
+		var_dump($this->fo_classfinder->getMatches());
+   	}
 	function index(){
 		$this->template->write('content', "Miscelleneous demo items");
 		$this->template->render();
