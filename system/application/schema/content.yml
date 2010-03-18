@@ -32,10 +32,10 @@ Article:
 ArticleTag:
   columns:
     article_id:
-      type: integer
+      type: integer(4)
       primary: true
     tag_id:
-      type: integer
+      type: integer(4)
       primary: true
 Tag:
   columns:
