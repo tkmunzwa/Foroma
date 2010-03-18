@@ -73,20 +73,20 @@ Module:
     description: Manage system modules
     menuposition: 4
     onmenu: true
-    Children: [modulelistall_mod, moduleedit_mod]
-  modulelistall_mod:
-    fragment: admin/usermodules/listall
-    text: List Modules
-    hovertext: List Modules
-    description: List all system modules
-    menuposition: 1
-    onmenu: true
-  moduleedit_mod:
-    fragment: admin/usermodules/edit
-    text: Edit Modules
-    hovertext: Edit Modules
-    description: Edit system modules
-    onmenu: false
+ #   Children: [modulelistall_mod, moduleedit_mod]
+#  modulelistall_mod:
+#    fragment: admin/usermodules/listall
+##    text: List Modules
+#    hovertext: List Modules
+#    description: List all system modules
+#    menuposition: 1
+#    onmenu: true
+#  moduleedit_mod:
+#    fragment: admin/usermodules/edit
+#    text: Edit Modules
+#    hovertext: Edit Modules
+#    description: Edit system modules
+#    onmenu: false
   roles_mod:
     fragment: admin/roles
     icon: roles.png
