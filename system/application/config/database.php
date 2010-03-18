@@ -62,9 +62,10 @@ Doctrine_Manager::connection($db['default']['dsn'], $db['default']['database']);
 // Set the model loading to conservative/lazy loading
 Doctrine_Manager::getInstance()->setAttribute('model_loading', 'conservative');
 // Load the models for the autoloader
-Doctrine::loadModels(realpath(dirname(__FILE__) . '/..') . DIRECTORY_SEPARATOR.'models');
-
-
+Doctrine::loadModels(array(
+	realpath(dirname(__FILE__) . '/..') . DIRECTORY_SEPARATOR.'models'.DIRECTORY_SEPARATOR.'generated', 
+	realpath(dirname(__FILE__) . '/..') . DIRECTORY_SEPARATOR.'models', 
+));
 $db['default']['char_set'] = "utf8";
 $db['default']['dbcollat'] = "utf8_general_ci";
 
