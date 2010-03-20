@@ -29,7 +29,7 @@ class Permissions extends Controller {
 	function create() {
 		$id = FALSE;
 		$p = FALSE;
-		$this->form_validation->set_rules('name', 'Permission name', 'required|trim|min_length[5]|max_length[12]');
+		$this->form_validation->set_rules('name', 'Permission name', 'required|trim|min_length[5]|max_length[36]');
 		if (@$_REQUEST['action']) {
 			if ($this->save($id, $p)){
 				$this->session->set_flashdata('message', sprintf(lang('permission_saved'), $p->name));
