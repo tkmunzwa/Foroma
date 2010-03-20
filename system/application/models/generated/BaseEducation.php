@@ -19,7 +19,7 @@
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
  * @author     ##NAME## <##EMAIL##>
- * @version    SVN: $Id: Builder.php 5845 2009-06-09 07:36:57Z jwage $
+ * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
  */
 abstract class BaseEducation extends Doctrine_Record
 {
@@ -64,6 +64,7 @@ abstract class BaseEducation extends Doctrine_Record
 
     public function setUp()
     {
+        parent::setUp();
         $this->hasOne('Candidate', array(
              'local' => 'candidate_id',
              'foreign' => 'id',

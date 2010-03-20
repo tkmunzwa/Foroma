@@ -11,21 +11,28 @@
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
  * @author     ##NAME## <##EMAIL##>
- * @version    SVN: $Id: Builder.php 5845 2009-06-09 07:36:57Z jwage $
+ * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
  */
 abstract class BaseArticleTag extends Doctrine_Record
 {
     public function setTableDefinition()
     {
         $this->setTableName('article_tag');
-        $this->hasColumn('article_id', 'integer', null, array(
+        $this->hasColumn('article_id', 'integer', 4, array(
              'type' => 'integer',
              'primary' => true,
+             'length' => '4',
              ));
-        $this->hasColumn('tag_id', 'integer', null, array(
+        $this->hasColumn('tag_id', 'integer', 4, array(
              'type' => 'integer',
              'primary' => true,
+             'length' => '4',
              ));
     }
 
+    public function setUp()
+    {
+        parent::setUp();
+        
+    }
 }

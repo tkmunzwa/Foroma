@@ -13,7 +13,7 @@
  * @package    ##PACKAGE##
  * @subpackage ##SUBPACKAGE##
  * @author     ##NAME## <##EMAIL##>
- * @version    SVN: $Id: Builder.php 5845 2009-06-09 07:36:57Z jwage $
+ * @version    SVN: $Id: Builder.php 7380 2010-03-15 21:07:50Z jwage $
  */
 abstract class BaseGroupPermission extends Doctrine_Record
 {
@@ -25,7 +25,7 @@ abstract class BaseGroupPermission extends Doctrine_Record
              'primary' => true,
              'length' => '4',
              ));
-        $this->hasColumn('permission_id', 'integer', 4, array(
+        $this->hasColumn('pid as permission_id', 'integer', 4, array(
              'type' => 'integer',
              'primary' => true,
              'length' => '4',
@@ -34,6 +34,7 @@ abstract class BaseGroupPermission extends Doctrine_Record
 
     public function setUp()
     {
+        parent::setUp();
         $this->hasOne('Group', array(
              'local' => 'group_id',
              'foreign' => 'id',
@@ -41,7 +42,6 @@ abstract class BaseGroupPermission extends Doctrine_Record
 
         $this->hasOne('Permission', array(
              'local' => 'permission_id',
-             'foreign' => 'id',
-             'onDelete' => 'CASCADE'));
+             'foreign' => 'id'));
     }
 }
