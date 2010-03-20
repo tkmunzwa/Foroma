@@ -1,3 +1,11 @@
+input[type^=text], input[type^=password], textarea{
+	border: 1px solid #888;
+	/*width: 10em;
+	/*font-size: inherit;*/
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+}
+
 label{
 	display: block;
 	text-align: left;
