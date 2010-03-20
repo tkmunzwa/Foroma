@@ -59,6 +59,14 @@ class Demo extends Controller implements IAdmin {
 		$this->template->render();
 
 	}
+	
+	/**
+	 * IAdmin method
+	 * @return 
+	 */
+	function _getAdminMethods(){
+		return null;
+	}
    
 }
 
