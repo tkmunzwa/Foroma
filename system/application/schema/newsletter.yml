@@ -1,0 +1,36 @@
+NewsletterModel:
+  columns:
+    id:
+      primary: true
+      autoincrement: true
+      type: integer(4)
+    name:
+      type: string(255)
+      unique: true
+      notnull: true
+    description: string(255)
+
+NewsletterEdition:
+  actAs: 
+    Timestampable:
+  columns:
+    id:
+      primary: true
+      autoincrement: true
+      type: integer(4)
+    subject: string(255)
+    body: clob
+    sent: timestamp
+    newsletter_id:
+      type: integer(4)
+      notnull: true
+    state:
+      type: enum
+      values: [draft, sending, sent, paused]
+      default: draft
+  relations:
+    NewsletterModel:
+      local: newsletter_id
+      foreign: id
+      onUpdate: CASCADE
+      onDelete: CASCADE

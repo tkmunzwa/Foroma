@@ -1,0 +1,34 @@
+ConfigSetting:
+  columns:
+    id:
+      primary: true
+      autoincrement: true
+      type: integer(4)
+    name:
+      type: string(255)
+      unique: true
+      notnull: true
+    stringval: string(255)
+    isstring:
+      type: boolean
+      default: true
+    intval: integer(4)
+
+
+#settings for SMTP servers
+SMTPSetting:
+  columns:
+    name:
+      type: string(255)
+      unique: true
+      notnull: true
+    server:
+      type: string(255)
+      notnull: true
+    port:
+      type: integer(4)
+      default: 25
+    encryption: string(10)
+    username: string(255)
+    password: string(255)
+    
