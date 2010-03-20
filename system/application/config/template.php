@@ -58,6 +58,7 @@ $template['active_template'] = 'default';
 
 $template['default']['template'] = 'themes/default/template';
 $template['bare']['template'] = 'themes/default/bare';
+$template['admin']['template'] = 'themes/default/admin';
 $template['default']['regions'] = array(
    'header' => array('content' => array('<div><small><i>Foroma Dev. Edition</i></small></div>')),
    'title',
