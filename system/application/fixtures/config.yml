@@ -35,3 +35,5 @@ MaritalStatus:
     name: divorced
   widowed:
     name: widowed
+  married:
+    name: Married
