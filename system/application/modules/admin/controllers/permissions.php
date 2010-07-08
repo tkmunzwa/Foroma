@@ -91,7 +91,8 @@ class Permissions extends Controller {
 					$m = $q->execute();
 					$m_arr = array ();
 					$p->unlink('Modules');
-					$this->firephp->warn($q->getSQL());
+					$p->save();
+					//$this->firephp->warn($q->getSQL());
 					
 					//doctrine bug selects all record if array $filter['modules'] is empty (above). we don't want all records, we want 0
 					if (sizeof($filter['modules']) > 0) foreach ($m as $n) {
@@ -138,7 +139,7 @@ class Permissions extends Controller {
 		$p->id = $id;
 		if ($id) {
 			if ( isset ($_REQUEST['action'])) {
-				if ($this->save($id, & $p)) {
+				if ($this->save($id, $p)) {
 					$this->session->set_flashdata("message", sprintf(lang('permission_saved'), $p->name));
 					redirect('admin/permissions/listall'); 
 					return;
@@ -193,7 +194,6 @@ class Permissions extends Controller {
 				try {
 					$name = $p->name;
 					$p->unlink('Modules');
-					$p->save();
 					$p->delete();
 					$this->session->set_flashdata('message', sprintf(lang("permission_deleted"),$name));
 					redirect('admin/permissions/listall');

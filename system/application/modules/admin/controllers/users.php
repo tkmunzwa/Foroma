@@ -120,7 +120,11 @@ class Users	 extends Controller
 					 * unlinked record is added right back before a save - the record is *not* saved. So, to bypass this, determine 
 					 * which records to be unlinked($remove_groups) (exclude those selected by user - $filter['groups']). Actual Doctrine_Record
 					 * instances need to be added to the $u->Group[] array, so store an associative array (called $arr_db_keys) using ID as the
-					 *  key and position in db-retrieved array($g) as value.  
+					 *  key and position in db-retrieved array($g) as value. 
+					 *  
+					 *  ...snip to later:
+					 *   Found a simpler alternative of simply calling save() after unlink()ing but before adding to child group. Adds a DB write
+					 *   operation
 					 */
 					$q = Doctrine_Query::create()
 						->from('Group g');
