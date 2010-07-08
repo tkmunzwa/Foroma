@@ -60,6 +60,13 @@ Module:
     description: Configure Users settings
     menuposition: 1
     onmenu: true
+  permissions_mod:
+    fragment: admin/permissions/listall
+    text: Permissions Admin.
+    hovertext: Manage Permissions
+    description: Configure User permissions
+    menuposition: 6
+    onmenu: true
   useredit_mod:
     fragment: admin/users/edit
     text: Edit User
@@ -174,7 +181,7 @@ Permission:
   admin_perm:
     name: Admin
     description: allow access to admin module
-    Modules: [admin_mod, admin_users, login_mod, modules_mod, roles_mod, help_mod, userlist_mod, usercreate_mod, useredit_mod]
+    Modules: [admin_mod, admin_users, login_mod, modules_mod, roles_mod, help_mod, userlist_mod, usercreate_mod, useredit_mod, permissions_mod]
   user_perm:
     name: "Regular Users"
     description: Rights assigned to regular system users
