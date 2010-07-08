@@ -113,38 +113,56 @@ class Users	 extends Controller
 					$u->username = $filter['username'];
 					if (isset($filter['password']) && $filter['password'] != "")
 						$u->setPassword($filter['password']);
-					$u->unlink("Groups");
+
+					
+					/************************
+					 * THe following code is one dirty, dirty, dirty hack. Doctrine_Recored::unlink() does not seem to work very well when the 
+					 * unlinked record is added right back before a save - the record is *not* saved. So, to bypass this, determine 
+					 * which records to be unlinked($remove_groups) (exclude those selected by user - $filter['groups']). Actual Doctrine_Record
+					 * instances need to be added to the $u->Group[] array, so store an associative array (called $arr_db_keys) using ID as the
+					 *  key and position in db-retrieved array($g) as value.  
+					 */
 					$q = Doctrine_Query::create()
-					->from('Group g')
-					->whereIn('g.id', $filter['groups']);
-					$g = $q->execute();					
-					$this->firephp->info($g->toArray(true));
-					$g_arr = array();
+						->from('Group g');
+//						->whereIn('g.id', $filter['groups']); //ideally should fetch user selected groups, unlink() all previous and link resultant records...
+					$g = $q->execute();
+
+/*
+					//the code below sadly does not work, due to Doctrine_Record::unlink() wierdness
+ 					$u->unlink('Groups');
 					foreach($g as $item){
 						$u->Groups[] = $item;
 					}
-					/*$q = Doctrine_Query::create()
-						->from('Language l')
-						->where('l.name', $filter['lang']);
-					$l = $q->execute();*/
+*/
+
+					$arr_db_ids = array(); //IDs fetched from database
+					$arr_db_keys = array(); //Look-up array for objects retrieved from database
+					foreach($g as $k=>$item){
+						$arr_db_ids[] = $item['id'];
+						$arr_db_keys[$item['id']] = $k;//store key in look-up array. can't be too sure about how doctrine produces keys.
+					}
+					$remove_groups = array_diff($arr_db_ids, $filter['groups']); //find out difference. ie, groups that should be unlinked
+					@$u->unlink("Groups", $remove_groups);
+					foreach($filter['groups'] as $item){ //now add user-selected groups to recored
+						$u->Groups[] = $g[$arr_db_keys[$item]];
+					}
+					//the end of the dirty hack. I feel like I need a shower.
+
 					$l = Doctrine::getTable('Language')
 					->findOneByName($filter['lang']);
-					/*@$this->firephp->info($q->getSqlQuery);
-					$l = Doctrine::getTable('Language')
-						->findOneByName($filter['lang']);
-					$this->firephp->info($l->name);*/
-					//$this->firephp->info(@$l->name);
+
 					if ($l) $u->Language = $l;
 					try{
 						$u->save();
 						$user = $this->fo_user->getUser();
-				//					echo "{$user->id} == {$u->id}";
-						if ($user->id == $u->id){//current user
+
+						if ($user->id == $u->id){//if user being edited is current user, update session values immediately.
 							$this->session->set_userdata(array('user_id'=> $u->id, 'username'=>$u->username,
 								'language'=>$u->language));
 						}
 						return TRUE;
 					} catch  (Exception $e) {
+						$this->warn($e);
 						$this->firephp->error("doctrine item fail". $e);
 						$this->_error(lang('db_error'));
 						if ($id == "new") //if save failed for new item - keep form id as 'new'
@@ -182,7 +200,7 @@ class Users	 extends Controller
 		$u->id = $id;
 		if ($id) {
 			if (isset($_REQUEST['action'])) { //record being saved from form 
-				if ($this->save($id, &$u)) {//save suceeded
+				if ($this->save($id, $u)) {//save suceeded
 					$this->firephp->info("save ok");
 					if ($u->id == "new"){
 						$u = Doctrine::getTable('Users')
@@ -191,6 +209,7 @@ class Users	 extends Controller
 					$this->session->set_flashdata("message", sprintf(lang("user_saved"), $u->username));
 					redirect('admin/users/listall');
 				}else{//save failed
+					$this->firephp->warn("save not ok");
 					$this->_error("Error saving record");
 					$this->firephp->error("Save failed");
 				}
