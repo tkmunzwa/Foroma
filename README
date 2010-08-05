@@ -1,0 +1,6 @@
+Foroma is an web application development, mostly based on CodeIgniter 1.7. Foroma incoporates a number of 
+disparate projects for different functionality - including SexyButtons, jQuery, Template, HMVC and Doctrine ORM. Optional modules are SwiftMailer and pCharts.
+
+
+Core CodeIgniter functionality is modified by means of a hook to check authentication. Centalised, Role-based Security is
+ employed against all URL-fragments; meaning that the role of the currently logged in user is checked
